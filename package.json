@@ -16,4 +16,6 @@
     "dev": "nodemon --exec \"ts-node\" ./src/index.ts",
     "build": "tsc",
     "start": "nodemon dist/index.js",
-    "li
+    "lint": "prettier --write ."
+  }
+}
