@@ -1,3 +1,6 @@
-console.log("hello worlds");
+import { Winbi } from "./client/client";
+import dotenv from "dotenv";
 
-export let thing;
+dotenv.config();
+
+new Winbi().start(process.env.TOKEN as string);

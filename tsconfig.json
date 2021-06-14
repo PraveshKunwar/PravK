@@ -26,6 +26,7 @@
     "strictPropertyInitialization": true,
     "baseUrl": ".",
     "moduleResolution": "node",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "experimentalDecorators": true
   }
 }
