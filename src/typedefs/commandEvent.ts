@@ -1,8 +1,12 @@
 import { Message } from "discord.js";
-import { Winbi } from "src/client/client";
+import { Winbi } from "../client";
 
 export interface CommandFunc {
-  (client: Winbi, message: Message, args: string | string[]): Promise<unknown>;
+  (
+    client: Winbi,
+    message: Message,
+    args: string | string[]
+  ): void | Promise<unknown>;
 }
 
 export interface EventFunc {
@@ -11,7 +15,13 @@ export interface EventFunc {
 
 export interface CommandStruct {
   name: string;
+  run: CommandFunc;
   aliases: string | string[];
   desc: string;
-  perms: string | string[];
+  perms: string | string[] | null;
+}
+
+export interface EventStruct {
+  name: string;
+  run: EventFunc;
 }

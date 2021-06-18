@@ -1,4 +1,4 @@
-import { Winbi } from "./client/client";
+import { Winbi } from "./client";
 import dotenv from "dotenv";
 
 dotenv.config();
