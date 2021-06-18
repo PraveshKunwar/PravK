@@ -17,6 +17,7 @@ class Winbi extends Client {
   public commands = new Collection<string, CommandStruct>();
   public events = new Collection<string, EventStruct>();
   public globPromised = promisify(glob);
+  public aliases: Collection<string, CommandStruct> = new Collection();
   public async cmdEvtHandler({
     CmdPattern,
     EvtPattern,
@@ -36,6 +37,7 @@ class Winbi extends Client {
         if (file.endsWith(".js") || file.match(/.*\.js$/)) {
           const evt: EventStruct = (await import(file)) as EventStruct;
           this.events.set(evt.name, evt);
+          this.on(evt.name, evt.run.bind(null, this));
         }
       });
     });
