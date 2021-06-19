@@ -1,7 +1,8 @@
 import { CommandFunc } from "../typedefs/commandEvent";
+import { Util } from "discord.js";
 
 export const run: CommandFunc = async (client, message, args) => {
-  return message.channel.send("Hello world.");
+  message.channel.send("Hello world!");
 };
 
 export const name: string = "ping";

@@ -7,17 +7,23 @@ import { CommandStruct, EventStruct } from "./typedefs/commandEvent";
 class Winbi extends Client {
   public constructor() {
     super({
-      ws: {
-        intents: Intents.ALL,
-      },
+      intents: Intents.ALL,
       partials: ["MESSAGE", "GUILD_MEMBER", "REACTION", "USER", "CHANNEL"],
       retryLimit: Number.POSITIVE_INFINITY,
     });
   }
-  public commands = new Collection<string, CommandStruct>();
-  public events = new Collection<string, EventStruct>();
-  public globPromised = promisify(glob);
-  public aliases: Collection<string, CommandStruct> = new Collection();
+  public commands: Collection<string, CommandStruct> = new Collection<
+    string,
+    CommandStruct
+  >();
+  public events: Collection<string, EventStruct> = new Collection<
+    string,
+    EventStruct
+  >();
+  public aliases: Collection<string, CommandStruct> = new Collection<
+    string,
+    CommandStruct
+  >();
   public async cmdEvtHandler({
     CmdPattern,
     EvtPattern,
@@ -30,6 +36,11 @@ class Winbi extends Client {
             file
           )) as Required<Readonly<CommandStruct>>;
           this.commands.set(cmd.name, cmd);
+          if (cmd.aliases) {
+            cmd.aliases.map((alias: string, i: number) => {
+              this.aliases.set(alias, cmd);
+            });
+          }
         }
       });
     });

@@ -2,7 +2,7 @@ import { Message } from "discord.js";
 import { Winbi } from "../client";
 
 export interface CommandFunc {
-  (client: Winbi, message: Message, args: string | string[]):
+  (client: Winbi, message: Message, args: string[] | any[]):
     | void
     | Promise<unknown>
     | Promise<void>;
@@ -15,7 +15,7 @@ export interface EventFunc {
 export interface CommandStruct {
   name?: string;
   run?: CommandFunc;
-  aliases?: string | string[];
+  aliases?: string[];
   desc?: string;
   perms?: string | string[] | null;
 }
