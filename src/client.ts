@@ -21,12 +21,14 @@ class Winbi extends Client {
   public async cmdEvtHandler({
     CmdPattern,
     EvtPattern,
-  }: Partial<Readonly<Omit<Pattern, "OtherPattern">>>) {
+  }: Partial<Readonly<Pick<Pattern, "CmdPattern" | "EvtPattern">>>) {
     glob(CmdPattern as string, (err: Error, cmdFiles: string[]) => {
       if (err) return console.error(err);
       cmdFiles.map(async (file: string, i: number) => {
         if (file.endsWith(".js") || file.match(/.*\.js$/)) {
-          const cmd: CommandStruct = (await import(file)) as CommandStruct;
+          const cmd: Required<Readonly<CommandStruct>> = (await import(
+            file
+          )) as Required<Readonly<CommandStruct>>;
           this.commands.set(cmd.name, cmd);
         }
       });
@@ -35,7 +37,9 @@ class Winbi extends Client {
       if (err) return console.error(err);
       evtFiles.map(async (file: string, i: number) => {
         if (file.endsWith(".js") || file.match(/.*\.js$/)) {
-          const evt: EventStruct = (await import(file)) as EventStruct;
+          const evt: Required<Readonly<EventStruct>> = (await import(
+            file
+          )) as Required<Readonly<EventStruct>>;
           this.events.set(evt.name, evt);
           this.on(evt.name, evt.run.bind(null, this));
         }

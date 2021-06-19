@@ -13,14 +13,14 @@ export interface EventFunc {
 }
 
 export interface CommandStruct {
-  name: string;
-  run: CommandFunc;
-  aliases: string | string[];
-  desc: string;
-  perms: string | string[] | null;
+  name?: string;
+  run?: CommandFunc;
+  aliases?: string | string[];
+  desc?: string;
+  perms?: string | string[] | null;
 }
 
 export interface EventStruct {
-  name: string;
-  run: EventFunc;
+  name?: string;
+  run?: EventFunc;
 }
