@@ -1,16 +1,14 @@
 import { readFile } from "fs/promises";
+import { statSync } from "fs";
 
 type toGet = "all" | "name" | "aliases" | "desc" | "cooldowns";
 
 interface Analyzer {
   path: string;
-  toGet: toGet;
 }
 
-export const cmdAnalyzer = async ({
-  path,
-  toGet,
-}: Partial<Readonly<Analyzer>>): Promise<string> => {
+export const cmdAnalyzer = async ({ path }: Partial<Readonly<Analyzer>>) => {
   const file = await readFile(path, "utf8");
-  return file;
+  const stats = statSync(path, { bigint: false, throwIfNoEntry: true });
+  return { file, stats };
 };
