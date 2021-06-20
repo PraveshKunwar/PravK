@@ -29,6 +29,6 @@ export const run: CommandFunc = async (client, message, args) => {
 };
 
 export const name: string = "bin";
-export const aliases: string | string[] = ["sourcebin", "code"];
+export const aliases: string[] = ["sourcebin", "code"];
 export const desc: string = "Upload code to sourcebin easily.";
 export const perms: string | string[] | null = null;
