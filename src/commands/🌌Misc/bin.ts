@@ -1,7 +1,7 @@
 import { MessageEmbed } from "discord.js";
 import sourcebin from "sourcebin";
-import { CommandFunc } from "../typedefs/commandEvent";
-import { ERROR } from "../typedefs/constants";
+import { CommandFunc } from "../../typedefs/commandEvent";
+import { ERROR } from "../../typedefs/constants";
 
 export const run: CommandFunc = async (client, message, args) => {
   const code = args.join(" ");
