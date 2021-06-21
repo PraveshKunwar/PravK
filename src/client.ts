@@ -59,12 +59,14 @@ class Winbi extends Client {
   }
 
   public async start(token: string): Promise<void> {
-    this.login(token);
-    this.cmdEvtHandler({
+    if(this instanceof Client){
+      this.login(token);
+      this.cmdEvtHandler({
       CmdPattern: `${__dirname}/commands/**/*{.js,.ts}`,
       EvtPattern: `${__dirname}/events/**/*{.js,.ts}`,
     });
   }
+    }
 }
 
 export { Winbi };

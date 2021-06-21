@@ -54,4 +54,4 @@ export const run: CommandFunc = async (client, message, args) => {
 export const name: string = "cmd";
 export const aliases: string[] = ["cmdyzer", "cmd-analyzer"];
 export const desc: string = "Upload code to sourcebin easily.";
-export const perms: string | string[] | null = null;
+export const perms: string | string[] | null = ["BOT_OWNER"]
