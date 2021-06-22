@@ -6,7 +6,7 @@ export const run: EventFunc = async (
   channel: TextChannel | DMChannel | NewsChannel,
   user: User
 ) => {
-  console.log(`User has been typing for: ${user.typingDurationIn}ms`);
+  //console.log(`User has been typing for: ${user.typingDurationIn}ms`);
 };
 
 export const name: string = "typingStart";
