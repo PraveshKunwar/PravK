@@ -1,7 +1,8 @@
-import { Message } from "discord.js";
+import { Collection, DiscordAPIError, Message, Snowflake } from "discord.js";
 import { CommandStruct, EventFunc } from "../typedefs/commandEvent";
 export const run: EventFunc = async (client, message: Message) => {
   const prefix = ".";
+  const cooldowns = client.cooldowns;
   if (
     message.author.bot ||
     !message.guild ||
@@ -15,6 +16,25 @@ export const run: EventFunc = async (client, message: Message) => {
   const cmd: string = args.shift();
   const command: CommandStruct =
     client.commands.get(cmd) || client.aliases.get(cmd);
+  if (!cooldowns.has(command.name)) {
+    cooldowns.set(command.name, new Collection<Snowflake, number>());
+  }
+  const current: number = Date.now();
+  const time = cooldowns.get(command.name);
+  const amount = command.cooldown * 1000;
+  if (time.has(message.author.id)) {
+    const expiresIn = time.get(message.author.id) + amount;
+    if (current < expiresIn) {
+      const timeRemaining = (expiresIn - current) / 1000;
+      return message.channel.send(
+        `Please wait ${timeRemaining.toFixed(2)} seconds before using ${
+          command.name
+        }.`
+      );
+    }
+  }
+  time.set(message.author.id, current);
+  setTimeout(() => time.delete(message.author.id), amount);
   if (!command || !command.run) return;
   else {
     command.run(client, message, args);

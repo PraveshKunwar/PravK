@@ -1,7 +1,7 @@
-import { Client, Collection, Intents } from "discord.js";
+import { Client, Collection, Intents, Snowflake } from "discord.js";
 import glob from "glob";
 import { Pattern } from "./typedefs/pattern";
-import { promisify } from "util";
+import { codeblock, oneblock } from "./lib/codeblock";
 import { CommandStruct, EventStruct } from "./typedefs/commandEvent";
 
 class Winbi extends Client {
@@ -24,6 +24,10 @@ class Winbi extends Client {
     string,
     CommandStruct
   >();
+  public cooldowns: Collection<string, Collection<Snowflake, number>> =
+    new Collection<string, Collection<Snowflake, number>>();
+  public codeblock = codeblock;
+  public oneblock = oneblock;
   public async cmdEvtHandler({
     CmdPattern,
     EvtPattern,
@@ -59,14 +63,14 @@ class Winbi extends Client {
   }
 
   public async start(token: string): Promise<void> {
-    if(this instanceof Client){
+    if (this instanceof Client) {
       this.login(token);
       this.cmdEvtHandler({
-      CmdPattern: `${__dirname}/commands/**/*{.js,.ts}`,
-      EvtPattern: `${__dirname}/events/**/*{.js,.ts}`,
-    });
-  }
+        CmdPattern: `${__dirname}/commands/**/*{.js,.ts}`,
+        EvtPattern: `${__dirname}/events/**/*{.js,.ts}`,
+      });
     }
+  }
 }
 
 export { Winbi };

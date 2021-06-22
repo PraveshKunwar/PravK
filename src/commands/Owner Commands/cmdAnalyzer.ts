@@ -14,19 +14,9 @@ export const run: CommandFunc = async (client, message, args) => {
         message.channel.send(ERROR.NO_ARGS);
       } else if (cmd) {
         const fileContent = await cmdAnalyzer({ path: cmd });
-        const ContentEmbed = new MessageEmbed().setColor("#333").addField(
-          "Stats",
-          `
-        Storage space: **${(fileContent.stats.size / (1024 * 1024)).toFixed(
-          3
-        )}mb**
-        Created At: **${moment(fileContent.stats.birthtime).format(
-          "MMMM Do YYYY, h:mm:ss a"
-        )}**
-        File?: **${fileContent.stats.isFile()}**
-        `,
-          true
-        );
+        const ContentEmbed = new MessageEmbed()
+          .setColor("#333")
+          .setTitle(`File loaded:`);
         if (fileContent.file.length > 2048) {
           const splitCmd = Util.splitMessage(fileContent.file, {
             maxLength: 512,
@@ -54,4 +44,5 @@ export const run: CommandFunc = async (client, message, args) => {
 export const name: string = "cmd";
 export const aliases: string[] = ["cmdyzer", "cmd-analyzer"];
 export const desc: string = "Upload code to sourcebin easily.";
-export const perms: string | string[] | null = ["BOT_OWNER"]
+export const perms: string | string[] | null = ["BOT_OWNER"];
+export const cooldown: number = 5;

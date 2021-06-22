@@ -18,6 +18,7 @@ export interface CommandStruct {
   aliases?: string[];
   desc?: string;
   perms?: string | string[] | null;
+  cooldown?: number;
 }
 
 export interface EventStruct {
