@@ -63,7 +63,7 @@ class Winbi extends Client {
   }
 
   public async start(token: string): Promise<void> {
-    if (this instanceof Client) {
+    if (this instanceof Client && token) {
       this.login(token);
       this.cmdEvtHandler({
         CmdPattern: `${__dirname}/commands/**/*{.js,.ts}`,

@@ -1,4 +1,4 @@
-import { Collection, DiscordAPIError, Message, Snowflake } from "discord.js";
+import { ApplicationCommandData, Collection, DiscordAPIError, Message, Snowflake } from "discord.js";
 import { CommandStruct, EventFunc } from "../typedefs/commandEvent";
 export const run: EventFunc = async (client, message: Message) => {
   const prefix = ".";
@@ -9,6 +9,8 @@ export const run: EventFunc = async (client, message: Message) => {
     !message.content.startsWith(prefix)
   )
     return;
+
+    
   const args: string[] | any[] = message.content
     .slice(prefix.length)
     .trim()
