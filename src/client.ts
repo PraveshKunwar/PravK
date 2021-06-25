@@ -3,6 +3,7 @@ import glob from "glob";
 import { Pattern } from "./typedefs/pattern";
 import { codeblock, oneblock } from "./lib/codeblock";
 import { CommandStruct, EventStruct } from "./typedefs/commandEvent";
+import { DBHandler } from "./handlers/DBHandler";
 
 class Winbi extends Client {
   public constructor() {
@@ -28,6 +29,7 @@ class Winbi extends Client {
     new Collection<string, Collection<Snowflake, number>>();
   public codeblock = codeblock;
   public oneblock = oneblock;
+  public DBHandler = DBHandler;
   public async cmdEvtHandler({
     CmdPattern,
     EvtPattern,
@@ -65,6 +67,7 @@ class Winbi extends Client {
   public async start(token: string): Promise<void> {
     if (this instanceof Client && token) {
       this.login(token);
+      this.DBHandler();
       this.cmdEvtHandler({
         CmdPattern: `${__dirname}/commands/**/*{.js,.ts}`,
         EvtPattern: `${__dirname}/events/**/*{.js,.ts}`,
