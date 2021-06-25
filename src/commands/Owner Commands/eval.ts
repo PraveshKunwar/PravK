@@ -1,13 +1,35 @@
 import { MessageEmbed } from "discord.js";
 import { inspect } from "util";
+import { embed } from "../../lib/embed";
 import { CommandFunc } from "../../typedefs/commandEvent";
 import { ERROR } from "../../typedefs/constants";
 
 export const run: CommandFunc = async (client, message, args) => {
   const evaluation = args.join(" ");
   if (message.member?.id !== "391364111331622912")
-    return message.channel.send(ERROR.NOT_OWNER);
-  if (!evaluation) message.channel.send(ERROR.NO_ARGS);
+    return message.channel.send({
+      embeds: [
+        embed({
+          desc: ERROR.NOT_OWNER,
+          color: "RED",
+          footer: {
+            text: "\u3000".repeat(10),
+          },
+        }),
+      ],
+    });
+  if (!evaluation)
+    return message.channel.send({
+      embeds: [
+        embed({
+          desc: ERROR.NO_ARGS,
+          color: "RED",
+          footer: {
+            text: "\u3000".repeat(10),
+          },
+        }),
+      ],
+    });
 
   let evaled;
   const start = process.hrtime();
@@ -21,30 +43,39 @@ export const run: CommandFunc = async (client, message, args) => {
       const result = `\`\`\`ts\n${inspect(evaled, { depth: 0 })}\`\`\``;
       const taken = `\`\`\`ts\n${
         (stop[0] * 1e9 + stop[1]) / 1e6
-      }ms taken!}\`\`\``;
-      const EvalEmbed = new MessageEmbed()
-        .setAuthor(client.user?.tag, client.user?.displayAvatarURL())
-        .setDescription(
-          `
-			**Result:**\n${result}\n**Time Taken:**\n${taken}
-			`
-        )
-        .setColor("#333")
-        .setTimestamp()
-        .setFooter(
-          `User: ${message.author?.tag} • Created by: PraveshK`,
-          message.author.displayAvatarURL()
-        );
-      message.channel.send({ embeds: [EvalEmbed] });
+      }ms taken!\`\`\``;
+      message.channel.send({
+        embeds: [
+          embed({
+            timestamp: true,
+            footer: {
+              text: `Winbi Bot • Created By PraveshK`,
+              iconURL: client.user.displayAvatarURL(),
+            },
+            authorName: message.author.tag,
+            authorIcon: message.author.displayAvatarURL(),
+            desc: `	**Result:**\n${result}\n**Time Taken:**\n${taken}`,
+            color: "NAVY",
+          }),
+        ],
+      });
     } catch (e) {
       if (e) {
         const DeletedEmbed = new MessageEmbed()
           .setColor("#333")
           .setDescription(`❯ ${e}`)
           .setFooter("\u3000".repeat(10));
-        message.channel
-          .send({ embeds: [DeletedEmbed] })
-          .then(async (msg) => await msg.delete());
+        message.channel.send({
+          embeds: [
+            embed({
+              desc: `❯ ${e}`,
+              color: "RED",
+              footer: {
+                text: "\u3000".repeat(10),
+              },
+            }),
+          ],
+        });
       }
     }
   }
