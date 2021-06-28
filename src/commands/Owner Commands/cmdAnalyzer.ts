@@ -1,4 +1,4 @@
-import { CommandFunc } from "../../typedefs/commandEvent";
+import { categories, CommandFunc } from "../../typedefs/commandEvent";
 import { ERROR } from "../../typedefs/constants";
 import { cmdAnalyzer } from "../../handlers/CmdAnalyzer";
 import { MessageEmbed, Util } from "discord.js";
@@ -46,3 +46,4 @@ export const aliases: string[] = ["cmdyzer", "cmd-analyzer"];
 export const desc: string = "Upload code to sourcebin easily.";
 export const perms: string | string[] | null = ["BOT_OWNER"];
 export const cooldown: number = 5;
+export const category: categories = "owner";

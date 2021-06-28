@@ -1,9 +1,15 @@
-import { Client } from "discord.js";
+import { Client, Snowflake } from "discord.js";
 import { HelperOptions } from "../typedefs/helperOptions";
 
 export abstract class HelperSession {
   public readonly client: Client;
-  public constructor(client: Client, options: HelperOptions) {
-    this.client = client;
+  public time: string | number | Date;
+  public id: Snowflake;
+  public constructor(options: HelperOptions) {
+    this.time = options.time;
+    this.id = options.id;
+  }
+  public schedule(period: string | number | Date) {
+    period = this.time;
   }
 }

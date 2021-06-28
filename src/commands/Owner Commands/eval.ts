@@ -1,7 +1,7 @@
 import { MessageEmbed } from "discord.js";
 import { inspect } from "util";
 import { embed } from "../../lib/embed";
-import { CommandFunc } from "../../typedefs/commandEvent";
+import { categories, CommandFunc } from "../../typedefs/commandEvent";
 import { ERROR } from "../../typedefs/constants";
 
 export const run: CommandFunc = async (client, message, args) => {
@@ -82,8 +82,8 @@ export const run: CommandFunc = async (client, message, args) => {
 };
 
 export const name: string = "eval";
-export const category: string = "owner";
 export const aliases: string[] = ["e", "evaluate"];
 export const desc: string = "Evaluate string.";
 export const perms: string[] = ["BOT_OWNER"];
 export const cooldown: number = 5;
+export const category: categories = "owner";

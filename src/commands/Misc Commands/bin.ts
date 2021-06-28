@@ -1,7 +1,7 @@
 import { DiscordAPIError, MessageEmbed } from "discord.js";
 import sourcebin from "sourcebin";
 import { embed } from "../../lib/embed";
-import { CommandFunc } from "../../typedefs/commandEvent";
+import { categories, CommandFunc } from "../../typedefs/commandEvent";
 import { ERROR } from "../../typedefs/constants";
 
 export const run: CommandFunc = async (client, message, args) => {
@@ -81,3 +81,4 @@ export const aliases: string[] = ["sourcebin", "code"];
 export const desc: string = "Upload code to sourcebin easily.";
 export const perms: string | string[] | null = null;
 export const cooldown: number = 10;
+export const category: categories = "misc";

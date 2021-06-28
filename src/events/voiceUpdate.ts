@@ -6,7 +6,7 @@ export const run: EventFunc = async (
   oldState: VoiceState,
   newState: VoiceState
 ) => {
-  //console.log(`OldState: ${oldState.mute} | Newstate: ${newState.mute}`);
+  console.log(`OldState: ${oldState.mute} | Newstate: ${newState.mute}`);
 };
 
 export const name: string = "voiceStateUpdate";
