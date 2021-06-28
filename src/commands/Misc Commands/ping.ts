@@ -32,5 +32,6 @@ export const name: string = "ping";
 export const aliases: string[] = ["pong"];
 export const desc: string = "A simple ping command.";
 export const perms: string | string[] | null = null;
-export const cooldown: number = 0;
+export const cooldown: number = 10;
 export const category: categories = "misc";
+export const usage: string | string[] = "<prefix>ping";

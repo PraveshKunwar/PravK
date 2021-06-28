@@ -39,7 +39,7 @@ type ColorResolvable =
   | "RANDOM";
 
 export interface EmbedData {
-  fields: EmbedFieldData;
+  fields: Required<EmbedFieldData[]>;
   name: string;
   value: string;
   inline?: boolean;

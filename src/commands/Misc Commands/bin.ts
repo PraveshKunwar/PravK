@@ -82,3 +82,4 @@ export const desc: string = "Upload code to sourcebin easily.";
 export const perms: string | string[] | null = null;
 export const cooldown: number = 10;
 export const category: categories = "misc";
+export const usage: string | string[] = "<prefix>bin <source code>";

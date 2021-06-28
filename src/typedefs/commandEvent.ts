@@ -22,6 +22,7 @@ export interface CommandStruct {
   perms?: string | string[] | null;
   cooldown?: number;
   category?: categories;
+  usage?: string | string[];
 }
 
 export interface EventStruct {

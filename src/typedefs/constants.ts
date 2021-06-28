@@ -5,4 +5,6 @@ export enum ERROR {
   PROCESS = "Cannot exit process.",
   NO_CATEGORY = "No category was provided, or you may have used the help command incorrectly.",
   NO_ARGS_NEEDED = "No arguments were necessary.",
+  TOO_MANY_ARGS = "Too many arguments were provided. Try again.",
+  COULD_NOT_FIND = "Could not find that. Try again.",
 }
