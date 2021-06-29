@@ -8,16 +8,63 @@ import fs from "fs/promises";
 import path from "path";
 import { embed } from "../../lib/embed";
 import { ERROR } from "../../typedefs/constants";
+import { PermissionString } from "discord.js";
 
 export const run: CommandFunc = async (client, message, args) => {
   const filterCmds = client.commands.filter((i) => i.category !== "owner");
-  const cmdNames = client.commands.map((i) => i.name);
+  const filterAliases = client.aliases.filter((i) => i.category !== "owner");
   const searchFor = args.join(" ");
+  const categoryCmds = (category: categories): string => {
+    return filterCmds
+      .filter((i) => i.category === category)
+      .map((cmd) => cmd.name)
+      .join(", ");
+  };
   if (!args || !searchFor) {
-    message.channel.send("hi");
+    message.channel.send({
+      embeds: [
+        embed({
+          fields: [
+            {
+              name: "🛠 Moderation",
+              value: `${client.codeblock(categoryCmds("moderation"))}`,
+              inline: true,
+            },
+            {
+              name: "💵 Currency",
+              value: `${client.codeblock(categoryCmds("currency"))}`,
+              inline: true,
+            },
+            {
+              name: "❓ Information",
+              value: `${client.codeblock(categoryCmds("information"))}`,
+              inline: true,
+            },
+            {
+              name: "🎖 Miscellaneous",
+              value: `${client.codeblock(categoryCmds("misc"))}`,
+              inline: true,
+            },
+          ],
+          timestamp: true,
+          color: "NAVY",
+          authorName: message.author.tag,
+          authorIcon: message.author.displayAvatarURL(),
+          footer: {
+            text: "Winbi Bot • Created By PraveshK",
+            iconURL: client.user.displayAvatarURL(),
+          },
+          title: "Help Dashboard",
+          desc: `Welcome to the help section. Type ${client.codeblock(
+            "<prefix>help <command name>"
+          )} to quickly get help on a command. \n\n Here are a list of all the commands down below: \n\nIf you need more help: [Github](https://github.com/PraveshKunwar/Winbi) • Discord: **PraveshK#4056**
+    `,
+        }),
+      ],
+    });
   } else {
     const cmd: CommandStruct =
-      client.commands.get(searchFor) || client.aliases.get(searchFor);
+      filterCmds.get(searchFor) || filterAliases.get(searchFor);
     if (!cmd || typeof cmd === "undefined") {
       return message.channel.send({
         embeds: [
@@ -99,7 +146,7 @@ export const run: CommandFunc = async (client, message, args) => {
 export const name: string = "help";
 export const desc: string =
   "Help command to get info on commands or specific command.";
-export const perms: string | string[] | null = null;
-export const cooldown: number = 5;
+export const perms: PermissionString[] | null = null;
+export const cooldown: number = 0;
 export const category: categories = "information";
 export const usage: string | string[] = "<prefix>help <command name>";

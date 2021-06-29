@@ -5,7 +5,9 @@ import {
   Message,
   Snowflake,
 } from "discord.js";
+import { embed } from "../lib/embed";
 import { CommandStruct, EventFunc } from "../typedefs/commandEvent";
+import { ERROR } from "../typedefs/constants";
 export const run: EventFunc = async (client, message: Message) => {
   const prefix = ".";
   const cooldowns = client.cooldowns;
@@ -34,11 +36,19 @@ export const run: EventFunc = async (client, message: Message) => {
     const expiresIn = time.get(message.author.id) + amount;
     if (current < expiresIn) {
       const timeRemaining = (expiresIn - current) / 1000;
-      return message.channel.send(
-        `Please wait ${timeRemaining.toFixed(2)} seconds before using ${
-          command.name
-        }.`
-      );
+      return message.channel.send({
+        embeds: [
+          embed({
+            desc: `⌚ Please wait **${timeRemaining.toFixed(
+              2
+            )}** seconds before using the **${command.name}** command.`,
+            color: "RED",
+            footer: {
+              text: "\u3000".repeat(10),
+            },
+          }),
+        ],
+      });
     }
   }
   time.set(message.author.id, current);
