@@ -1,8 +1,7 @@
 # Introduction
 
-Welcome to Winbi. 
+Welcome to Winbi.
 
-## Halt process?
+## Contributing
 
-This will be my last commit on this bot for a bit. Feel free to contribute if you would like, but working on some bigger things 
-for now.
+Checkout the contributing file if you want to contribute.

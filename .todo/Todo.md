@@ -4,4 +4,4 @@
 
 ### Commands
 
-- Add a help command (using Discords Util class, and other cool packages.)
+-  Add a help command (using Discords Util class, and other cool packages.)

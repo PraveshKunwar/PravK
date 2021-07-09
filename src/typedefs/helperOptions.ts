@@ -1,6 +1,6 @@
-import { Snowflake } from "discord.js";
+import { Snowflake } from 'discord.js';
 
 export interface HelperOptions {
-  time?: number | Date | string;
-  id?: Snowflake;
+   time?: number | Date | string;
+   id?: Snowflake;
 }
