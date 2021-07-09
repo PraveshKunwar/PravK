@@ -1,13 +1,21 @@
-import { readFile } from "fs/promises";
-import { statSync } from "fs";
+import { readFile } from 'fs/promises';
+import { Stats, statSync } from 'fs';
 
 interface Analyzer {
-  path: string;
+   path: string;
 }
 
-export const cmdAnalyzer = async ({ path }: Partial<Readonly<Analyzer>>) => {
-  const file = await readFile(path, "utf8");
-  const stats = statSync(path, { bigint: false, throwIfNoEntry: true });
+export const cmdAnalyzer = async ({
+   path
+}: Partial<Readonly<Analyzer>>): Promise<{
+   file: string;
+   stats: Stats;
+}> => {
+   const file = await readFile(path, 'utf8');
+   const stats = statSync(path, {
+      bigint: false,
+      throwIfNoEntry: true
+   });
 
-  return { file, stats };
+   return { file, stats };
 };
