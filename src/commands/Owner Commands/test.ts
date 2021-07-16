@@ -13,16 +13,11 @@ export const run: CommandFunc = async (
    message,
    args
 ) => {
-   const row = new MessageActionRow().addComponents(
-      new MessageButton()
-         .setCustomID('primary')
-         .setLabel('Primary')
-         .setStyle('PRIMARY')
-   );
-   await message.channel.send({
-      content: 'HI',
-      components: [row]
-   });
+   const newButton = new MessageButton()
+      .setCustomID('primary')
+      .setLabel('Primary')
+      .setStyle('PRIMARY');
+   await message.channel.send({ components: [newButton] });
 };
 
 export const name = 'test';
