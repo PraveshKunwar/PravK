@@ -5,6 +5,7 @@ import {
    CommandFunc
 } from '../../typedefs/commandEvent';
 import { ERROR } from '../../typedefs/constants';
+import * as ts from 'typescript';
 
 export const run: CommandFunc = async (
    client,
@@ -51,7 +52,7 @@ export const run: CommandFunc = async (
       message.member?.id === '391364111331622912'
    ) {
       try {
-         evaled = eval(evaluation);
+         evaled = eval(ts.transpile(evaluation));
          const result = `\`\`\`ts\n${inspect(evaled, {
             depth: 0
          })}\`\`\``;

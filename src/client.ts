@@ -11,11 +11,20 @@ import {
    CommandStruct,
    EventStruct
 } from './typedefs/commandEvent';
-import { DBHandler } from './handlers/DBHandler';
+import DBHandler from './handlers/DBHandler';
+import MusicHandler from './handlers/MusicHandler';
+import dotenv from 'dotenv';
+dotenv.config();
 
 class Winbi extends Client {
    public constructor() {
       super({
+         allowedMentions: {
+            users: [
+               '391364111331622912',
+               '854045285611995167'
+            ]
+         },
          intents: Intents.ALL,
          partials: [
             'MESSAGE',
@@ -42,66 +51,59 @@ class Winbi extends Client {
    >();
    public codeblock = codeblock;
    public oneblock = oneblock;
-   public DBHandler = DBHandler;
+   public DBHandler: DBHandler = new DBHandler();
+   public MusicHandler: MusicHandler = new MusicHandler();
    public async cmdEvtHandler({
       CmdPattern,
       EvtPattern
    }: Partial<
       Readonly<Pick<Pattern, 'CmdPattern' | 'EvtPattern'>>
    >): Promise<void> {
-      glob(
-         CmdPattern as string,
-         (err: Error, cmdFiles: string[]) => {
-            if (err) return console.error(err);
-            cmdFiles.map(async (file: string) => {
-               if (
-                  file.endsWith('.js') ||
-                  file.match(/.*\.js$/)
-               ) {
-                  const cmd: Required<
-                     Readonly<CommandStruct>
-                  > = (await import(file)) as Required<
-                     Readonly<CommandStruct>
-                  >;
-                  this.commands.set(cmd.name, cmd);
-                  if (cmd.aliases) {
-                     cmd.aliases.map((alias: string) => {
-                        this.aliases.set(alias, cmd);
-                     });
-                  }
+      glob(CmdPattern, (err: Error, cmdFiles: string[]) => {
+         if (err) return console.error(err);
+         cmdFiles.map(async (file: string) => {
+            if (
+               file.endsWith('.js') ||
+               file.match(/.*\.js$/)
+            ) {
+               const cmd: Required<
+                  Readonly<CommandStruct>
+               > = (await import(file)) as Required<
+                  Readonly<CommandStruct>
+               >;
+               this.commands.set(cmd.name, cmd);
+               if (cmd.aliases) {
+                  cmd.aliases.map((alias: string) => {
+                     this.aliases.set(alias, cmd);
+                  });
                }
-            });
-         }
-      );
-      glob(
-         EvtPattern as string,
-         (err: Error, evtFiles: string[]) => {
-            if (err) return console.error(err);
-            evtFiles.map(async (file: string) => {
-               if (
-                  file.endsWith('.js') ||
-                  file.match(/.*\.js$/)
-               ) {
-                  const evt: Required<
-                     Readonly<EventStruct>
-                  > = (await import(file)) as Required<
+            }
+         });
+      });
+      glob(EvtPattern, (err: Error, evtFiles: string[]) => {
+         if (err) return console.error(err);
+         evtFiles.map(async (file: string) => {
+            if (
+               file.endsWith('.js') ||
+               file.match(/.*\.js$/)
+            ) {
+               const evt: Required<Readonly<EventStruct>> =
+                  (await import(file)) as Required<
                      Readonly<EventStruct>
                   >;
-                  this.events.set(evt.name, evt);
-                  this.on(
-                     evt.name,
-                     evt.run.bind(null, this)
-                  );
-               }
-            });
-         }
-      );
+               this.events.set(evt.name, evt);
+               this.on(evt.name, evt.run.bind(null, this));
+            }
+         });
+      });
    }
 
    public async start(token: string): Promise<void> {
       if (this instanceof Client && token) {
          this.login(token);
-         this.DBHandler();
+         this.DBHandler.connect(
+            process.env.MONGO_URI as string
+         );
          this.cmdEvtHandler({
             CmdPattern: `${__dirname}/commands/**/*{.js,.ts}`,
             EvtPattern: `${__dirname}/events/**/*{.js,.ts}`
