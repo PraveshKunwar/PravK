@@ -5,15 +5,15 @@ import {
    Snowflake
 } from 'discord.js';
 import glob from 'glob';
-import { Pattern } from './typedefs/pattern';
 import { codeblock, oneblock } from './lib/codeblock';
-import {
-   CommandStruct,
-   EventStruct
-} from './typedefs/commandEvent';
 import DBHandler from './handlers/DBHandler';
 import MusicHandler from './handlers/MusicHandler';
 import dotenv from 'dotenv';
+import {
+   CommandStruct,
+   EventStruct,
+   Pattern
+} from './typedefs/CommandEvent';
 dotenv.config();
 
 class Winbi extends Client {

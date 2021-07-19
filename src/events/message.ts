@@ -3,7 +3,7 @@ import { embed } from '../lib/embed';
 import {
    CommandStruct,
    EventFunc
-} from '../typedefs/commandEvent';
+} from '../typedefs/CommandEvent';
 export const run: EventFunc = async (
    client,
    message: Message
@@ -65,9 +65,9 @@ export const run: EventFunc = async (
          return message.channel.send({
             embeds: [
                embed({
-                  desc: `❌ Missing Perms: **${client.codeblock(
+                  desc: `❌ Missing Perms: \n**${client.codeblock(
                      command.perms.join(', ')
-                  )}**`,
+                  )}**\nPlease give me the following permissions in order for me to properly run in the server.`,
                   color: 'RED',
                   footer: {
                      text: '\u3000'.repeat(10)
@@ -79,9 +79,9 @@ export const run: EventFunc = async (
          return message.channel.send({
             embeds: [
                embed({
-                  desc: `❌ Missing Perms: **${client.codeblock(
+                  desc: `❌ Missing Perms: \n**${client.codeblock(
                      command.perms[0]
-                  )}**`,
+                  )}**\nPlease give me the following permissions in order for me to properly run in the server.`,
                   color: 'RED',
                   footer: {
                      text: '\u3000'.repeat(10)

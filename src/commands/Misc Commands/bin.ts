@@ -7,7 +7,7 @@ import { embed } from '../../lib/embed';
 import {
    categories,
    CommandFunc
-} from '../../typedefs/commandEvent';
+} from '../../typedefs/CommandEvent';
 import { ERROR } from '../../typedefs/constants';
 
 export const run: CommandFunc = async (
@@ -93,7 +93,9 @@ export const run: CommandFunc = async (
 export const name = 'bin';
 export const aliases = ['sourcebin', 'code'];
 export const desc = 'Upload code to sourcebin easily.';
-export const perms: PermissionString[] | null = null;
+export const perms: PermissionString[] | null = [
+   'SEND_MESSAGES'
+];
 export const cooldown = 10;
 export const category: categories = 'misc';
 export const usage: string | string[] =

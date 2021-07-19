@@ -1,5 +1,5 @@
 import { VoiceState } from 'discord.js';
-import { EventFunc } from '../typedefs/commandEvent';
+import { EventFunc } from '../typedefs/CommandEvent';
 
 export const run: EventFunc = async (
    client,

@@ -1,7 +1,7 @@
 import {
    categories,
    CommandFunc
-} from '../../typedefs/commandEvent';
+} from '../../typedefs/CommandEvent';
 import { ERROR } from '../../typedefs/constants';
 import { cmdAnalyzer } from '../../handlers/CmdAnalyzer';
 import { MessageEmbed } from 'discord.js';

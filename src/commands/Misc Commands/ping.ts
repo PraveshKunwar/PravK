@@ -1,7 +1,7 @@
 import {
    categories,
    CommandFunc
-} from '../../typedefs/commandEvent';
+} from '../../typedefs/CommandEvent';
 import { PermissionString } from 'discord.js';
 import { embed } from '../../lib/embed';
 import { ERROR } from '../../typedefs/constants';
@@ -43,7 +43,9 @@ export const run: CommandFunc = async (
 export const name = 'ping';
 export const Aliases = ['pong'];
 export const desc = 'A simple ping command.';
-export const perms: PermissionString[] | null = null;
+export const perms: PermissionString[] | null = [
+   'SEND_MESSAGES'
+];
 export const cooldown = 10;
 export const category: categories = 'misc';
 export const usage: string | string[] = '<prefix>ping';

@@ -1,4 +1,4 @@
-import { EventFunc } from '../typedefs/commandEvent';
+import { EventFunc } from '../typedefs/CommandEvent';
 
 export const run: EventFunc = async (client) => {
    console.log(`${client.user.tag} is online!`);

@@ -2,7 +2,7 @@ import {
    categories,
    CommandFunc,
    CommandStruct
-} from '../../typedefs/commandEvent';
+} from '../../typedefs/CommandEvent';
 import { embed } from '../../lib/embed';
 import { ERROR } from '../../typedefs/constants';
 import { PermissionString } from 'discord.js';
@@ -169,7 +169,9 @@ export const run: CommandFunc = async (
 export const name = 'help';
 export const desc =
    'Help command to get info on commands or specific command.';
-export const perms: PermissionString[] | null = null;
+export const perms: PermissionString[] | null = [
+   'SEND_MESSAGES'
+];
 export const cooldown = 0;
 export const category: categories = 'information';
 export const usage: string | string[] =

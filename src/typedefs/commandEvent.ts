@@ -37,3 +37,9 @@ export interface EventStruct {
    name?: string;
    run?: EventFunc;
 }
+
+export interface Pattern {
+   CmdPattern: string;
+   EvtPattern: string;
+   OtherPattern: string;
+}
