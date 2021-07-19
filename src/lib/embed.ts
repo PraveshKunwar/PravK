@@ -46,7 +46,7 @@ export interface EmbedData {
    files: Array<FileOptions | string | MessageAttachment>;
    authorName: string;
    authorIcon: string;
-   color: ColorResolvable | string;
+   color: ColorResolvable;
    desc: string;
    footer: {
       text: string;

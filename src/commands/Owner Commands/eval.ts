@@ -3,7 +3,7 @@ import { embed } from '../../lib/embed';
 import {
    categories,
    CommandFunc
-} from '../../typedefs/CommandEvent';
+} from '../../typedefs/commandEvent';
 import { ERROR } from '../../typedefs/constants';
 import * as ts from 'typescript';
 

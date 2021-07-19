@@ -14,6 +14,7 @@ import {
    EventStruct,
    Pattern
 } from './typedefs/CommandEvent';
+import Utility from './lib/util';
 dotenv.config();
 
 class Winbi extends Client {
@@ -51,6 +52,7 @@ class Winbi extends Client {
    >();
    public codeblock = codeblock;
    public oneblock = oneblock;
+   public util = new Utility();
    public DBHandler: DBHandler = new DBHandler();
    public MusicHandler: MusicHandler = new MusicHandler();
    public async cmdEvtHandler({
