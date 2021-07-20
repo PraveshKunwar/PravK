@@ -1,9 +1,8 @@
 import { inspect } from 'util';
-import { embed } from '../../lib/embed';
 import {
    categories,
    CommandFunc
-} from '../../typedefs/commandEvent';
+} from '../../typedefs/CommandEvent';
 import { ERROR } from '../../typedefs/constants';
 import * as ts from 'typescript';
 
@@ -13,22 +12,10 @@ export const run: CommandFunc = async (
    args
 ) => {
    const evaluation = args.join(' ');
-   if (message.member?.id !== '391364111331622912')
-      return message.channel.send({
-         embeds: [
-            embed({
-               desc: ERROR.NOT_OWNER,
-               color: 'RED',
-               footer: {
-                  text: '\u3000'.repeat(10)
-               }
-            })
-         ]
-      });
    if (!evaluation)
       return message.channel.send({
          embeds: [
-            embed({
+            await client.util.embed({
                desc: ERROR.NO_ARGS,
                color: 'RED',
                footer: {
@@ -41,11 +28,33 @@ export const run: CommandFunc = async (
    let evaled;
    const start = process.hrtime();
    const stop = process.hrtime(start);
-   if (
-      evaluation.includes('process') ||
-      evaluation.includes('process.exit()')
-   ) {
-      message.channel.send(ERROR.PROCESS);
+   const prRegex = new RegExp(/process/gi);
+   const tokenRegex = new RegExp(/token/gi);
+   if (prRegex.test(evaluation) === true) {
+      return message.channel.send({
+         embeds: [
+            await client.util.embed({
+               desc: ERROR.PROCESS,
+               color: 'RED',
+               footer: {
+                  text: '\u3000'.repeat(10)
+               }
+            })
+         ]
+      });
+   }
+   if (tokenRegex.test(evaluation) === true) {
+      return message.channel.send({
+         embeds: [
+            await client.util.embed({
+               desc: ERROR.TOKEN,
+               color: 'RED',
+               footer: {
+                  text: '\u3000'.repeat(10)
+               }
+            })
+         ]
+      });
    }
    if (
       evaluation &&
@@ -61,7 +70,7 @@ export const run: CommandFunc = async (
          }ms taken!\`\`\``;
          message.channel.send({
             embeds: [
-               embed({
+               await client.util.embed({
                   timestamp: true,
                   footer: {
                      text: `Winbi Bot • Created By PraveshK`,
@@ -79,7 +88,7 @@ export const run: CommandFunc = async (
          if (e) {
             message.channel.send({
                embeds: [
-                  embed({
+                  await client.util.embed({
                      desc: `❯ ${e}`,
                      color: 'RED',
                      footer: {
@@ -95,6 +104,9 @@ export const run: CommandFunc = async (
 
 export const name = 'eval';
 export const aliases = ['e', 'evaluate'];
-export const desc = 'Evaluate string.';
+export const desc = 'Evaluate anything.';
+export const perms: string | string[] | null = [
+   'BOT_OWNER'
+];
 export const cooldown = 5;
 export const category: categories = 'owner';

@@ -3,7 +3,6 @@ import {
    CommandFunc
 } from '../../typedefs/CommandEvent';
 import { PermissionString } from 'discord.js';
-import { embed } from '../../lib/embed';
 import { ERROR } from '../../typedefs/constants';
 
 export const run: CommandFunc = async (
@@ -15,7 +14,7 @@ export const run: CommandFunc = async (
    if (args.length >= 1) {
       return message.channel.send({
          embeds: [
-            embed({
+            await client.util.embed({
                desc:
                   ERROR.NO_ARGS_NEEDED +
                   '\n**Usage**: <prefix>ping',

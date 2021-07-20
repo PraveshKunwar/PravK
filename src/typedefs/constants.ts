@@ -3,6 +3,7 @@ export enum ERROR {
    UNKNOWN = '❌ There was an error: ',
    NOT_OWNER = '❌ You are not the owner of this bot, this command is disabled.',
    PROCESS = '❌ Cannot exit process.',
+   TOKEN = '❌ Cannot show token.',
    NO_CATEGORY = '❌ No category was provided, or you may have used the help command incorrectly.',
    NO_ARGS_NEEDED = '❌ No arguments were necessary.',
    TOO_MANY_ARGS = '❌ Too many arguments were provided. Try again.',

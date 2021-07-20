@@ -24,6 +24,7 @@
       "glob": "^7.1.7",
       "http-cache-semantics": "^4.1.0",
       "keyv": "^4.0.3",
+      "mathjs": "^9.4.4",
       "minimatch": "^3.0.4",
       "moment": "^2.29.1",
       "mongoose": "^5.13.3",

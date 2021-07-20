@@ -3,7 +3,6 @@ import {
    PermissionString
 } from 'discord.js';
 import sourcebin from 'sourcebin';
-import { embed } from '../../lib/embed';
 import {
    categories,
    CommandFunc
@@ -19,7 +18,7 @@ export const run: CommandFunc = async (
    if (!code) {
       return message.channel.send({
          embeds: [
-            embed({
+            await client.util.embed({
                desc: ERROR.NO_ARGS,
                color: 'RED',
                footer: {
@@ -44,10 +43,10 @@ export const run: CommandFunc = async (
          );
          message
             .delete()
-            .then(() => {
+            .then(async () => {
                message.channel.send({
                   embeds: [
-                     embed({
+                     await client.util.embed({
                         timestamp: true,
                         color: 'NAVY',
                         desc: `Here is your url: ${bin.url}`,
@@ -63,11 +62,11 @@ export const run: CommandFunc = async (
                   ]
                });
             })
-            .catch((err: DiscordAPIError) => {
+            .catch(async (err: DiscordAPIError) => {
                if (err.message) {
                   return message.channel.send({
                      embeds: [
-                        embed({
+                        await client.util.embed({
                            desc: `${
                               ERROR.UNKNOWN
                            }${client.oneblock(

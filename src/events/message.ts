@@ -1,9 +1,9 @@
 import { Collection, Message, Snowflake } from 'discord.js';
-import { embed } from '../lib/embed';
 import {
    CommandStruct,
    EventFunc
 } from '../typedefs/CommandEvent';
+import { ERROR } from '../typedefs/constants';
 export const run: EventFunc = async (
    client,
    message: Message
@@ -43,7 +43,7 @@ export const run: EventFunc = async (
          const timeRemaining = (expiresIn - current) / 1000;
          return message.channel.send({
             embeds: [
-               embed({
+               await client.util.embed({
                   desc: `⌚ Please wait **${timeRemaining.toFixed(
                      2
                   )}** seconds before using the **${
@@ -60,11 +60,27 @@ export const run: EventFunc = async (
    }
    time.set(message.author.id, current);
    setTimeout(() => time.delete(message.author.id), amount);
-   if (!message.guild.me.permissions.has(command.perms)) {
+   if ((command.perms as string[]).includes('BOT_OWNER')) {
+      if (message.author.id !== '391364111331622912') {
+         return message.channel.send({
+            embeds: [
+               await client.util.embed({
+                  desc: ERROR.NOT_OWNER,
+                  color: 'RED',
+                  footer: {
+                     text: '\u3000'.repeat(10)
+                  }
+               })
+            ]
+         });
+      }
+   } else if (
+      !message.guild.me.permissions.has(command.perms)
+   ) {
       if (command.perms.length >= 2) {
          return message.channel.send({
             embeds: [
-               embed({
+               await client.util.embed({
                   desc: `❌ Missing Perms: \n**${client.codeblock(
                      command.perms.join(', ')
                   )}**\nPlease give me the following permissions in order for me to properly run in the server.`,
@@ -78,7 +94,7 @@ export const run: EventFunc = async (
       } else {
          return message.channel.send({
             embeds: [
-               embed({
+               await client.util.embed({
                   desc: `❌ Missing Perms: \n**${client.codeblock(
                      command.perms[0]
                   )}**\nPlease give me the following permissions in order for me to properly run in the server.`,

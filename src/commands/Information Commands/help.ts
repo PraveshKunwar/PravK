@@ -3,7 +3,6 @@ import {
    CommandFunc,
    CommandStruct
 } from '../../typedefs/CommandEvent';
-import { embed } from '../../lib/embed';
 import { ERROR } from '../../typedefs/constants';
 import { PermissionString } from 'discord.js';
 
@@ -28,7 +27,7 @@ export const run: CommandFunc = async (
    if (!args || !searchFor) {
       message.channel.send({
          embeds: [
-            embed({
+            await client.util.embed({
                fields: [
                   {
                      name: '🛠 Moderation',
@@ -83,7 +82,7 @@ export const run: CommandFunc = async (
       if (!cmd || typeof cmd === 'undefined') {
          return message.channel.send({
             embeds: [
-               embed({
+               await client.util.embed({
                   desc: ERROR.COULD_NOT_FIND,
                   color: 'RED',
                   footer: {
@@ -95,7 +94,7 @@ export const run: CommandFunc = async (
       } else {
          message.channel.send({
             embeds: [
-               embed({
+               await client.util.embed({
                   timestamp: true,
                   color: 'NAVY',
                   title: `Command Name: ${cmd.name.toLowerCase()}`,

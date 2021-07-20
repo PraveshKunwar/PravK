@@ -6,7 +6,6 @@ import {
 import { ERROR } from '../../typedefs/constants';
 import axios, { AxiosResponse } from 'axios';
 import { QuoteResponse } from '../../typedefs/Response';
-import { embed } from '../../lib/embed';
 
 export const run: CommandFunc = async (
    client,
@@ -19,7 +18,7 @@ export const run: CommandFunc = async (
    if (res.status === 404) {
       return message.channel.send({
          embeds: [
-            embed({
+            await client.util.embed({
                desc: `${ERROR.FAILED_REQUEST}`,
                color: 'RED',
                footer: {
@@ -31,7 +30,7 @@ export const run: CommandFunc = async (
    } else {
       message.channel.send({
          embeds: [
-            embed({
+            await client.util.embed({
                timestamp: true,
                color: 'NAVY',
                desc: `📜 Quote: **${

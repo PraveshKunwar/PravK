@@ -54,7 +54,9 @@ class Winbi extends Client {
    public oneblock = oneblock;
    public util = new Utility();
    public DBHandler: DBHandler = new DBHandler();
-   public MusicHandler: MusicHandler = new MusicHandler();
+   public MusicHandler: MusicHandler = new MusicHandler(
+      this
+   );
    public async cmdEvtHandler({
       CmdPattern,
       EvtPattern
