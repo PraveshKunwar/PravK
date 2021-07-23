@@ -2,7 +2,7 @@ import { Collection, Message, Snowflake } from 'discord.js';
 import {
    CommandStruct,
    EventFunc
-} from '../typedefs/CommandEvent';
+} from '../typedefs/types';
 import { ERROR } from '../typedefs/constants';
 export const run: EventFunc = async (
    client,
@@ -81,7 +81,7 @@ export const run: EventFunc = async (
          return message.channel.send({
             embeds: [
                await client.util.embed({
-                  desc: `❌ Missing Perms: \n**${client.codeblock(
+                  desc: `❌ Missing Perms: \n**${client.util.codeblock(
                      command.perms.join(', ')
                   )}**\nPlease give me the following permissions in order for me to properly run in the server.`,
                   color: 'RED',
@@ -95,7 +95,7 @@ export const run: EventFunc = async (
          return message.channel.send({
             embeds: [
                await client.util.embed({
-                  desc: `❌ Missing Perms: \n**${client.codeblock(
+                  desc: `❌ Missing Perms: \n**${client.util.codeblock(
                      command.perms[0]
                   )}**\nPlease give me the following permissions in order for me to properly run in the server.`,
                   color: 'RED',
@@ -109,7 +109,11 @@ export const run: EventFunc = async (
    }
    if (!command || !command.run) return;
    else {
-      command.run(client, message, args);
+      try {
+         command.run(client, message, args);
+      } catch (e) {
+         client.logger.error(new Error(`Error: ${e}`));
+      }
    }
 };
 

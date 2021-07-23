@@ -2,7 +2,7 @@ import { inspect } from 'util';
 import {
    categories,
    CommandFunc
-} from '../../typedefs/CommandEvent';
+} from '../../typedefs/types';
 import { ERROR } from '../../typedefs/constants';
 import * as ts from 'typescript';
 

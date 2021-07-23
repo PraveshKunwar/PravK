@@ -15,6 +15,7 @@
       "@typescript-eslint/parser": "^4.28.2",
       "axios": "^0.21.1",
       "cacheable-request": "^7.0.2",
+      "consola": "^2.15.3",
       "discord.js": "^13.0.0-dev.807ea2d3c197c7c6556bd1c894114932f6657d49",
       "dotenv": "^10.0.0",
       "eslint": "^7.30.0",

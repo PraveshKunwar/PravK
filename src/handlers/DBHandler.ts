@@ -1,6 +1,12 @@
 import mongoose from 'mongoose';
+import { Client } from 'discord.js';
+import { Winbi } from '../client';
 
 export default class DBHandler {
+   private client: Client;
+   public constructor(client: Client) {
+      this.client = client;
+   }
    public options = {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -14,13 +20,19 @@ export default class DBHandler {
          useUnifiedTopology: true
       });
       mongoose.connection.on('connected', () => {
-         console.log('Database has been connected.');
+         (this.client as Winbi).logger.success(
+            'Database has been connected.'
+         );
       });
       mongoose.connection.on('disconnected', () => {
-         console.log('Database has been disconnected.');
+         (this.client as Winbi).logger.success(
+            'Database has been disconnected.'
+         );
       });
       mongoose.connection.on('error', (err) => {
-         console.error(`Error: ${err.stack}`);
+         (this.client as Winbi).logger.error(
+            new Error(`Error: ${err.stack}`)
+         );
       });
    }
    public async findOneBy(

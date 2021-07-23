@@ -2,10 +2,10 @@ import { PermissionString } from 'discord.js';
 import {
    categories,
    CommandFunc
-} from '../../typedefs/CommandEvent';
+} from '../../typedefs/types';
 import { ERROR } from '../../typedefs/constants';
 import axios, { AxiosResponse } from 'axios';
-import { QuoteResponse } from '../../typedefs/Response';
+import { QuoteResponse } from '../../typedefs/types';
 
 export const run: CommandFunc = async (
    client,

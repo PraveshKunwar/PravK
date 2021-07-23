@@ -1,5 +1,5 @@
 import { Client, Snowflake } from 'discord.js';
-import { HelperOptions } from '../typedefs/helperOptions';
+import { HelperOptions } from '../typedefs/types';
 
 export abstract class HelperSession {
    public readonly client: Client;

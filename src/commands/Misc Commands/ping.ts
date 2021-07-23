@@ -1,7 +1,7 @@
 import {
    categories,
    CommandFunc
-} from '../../typedefs/CommandEvent';
+} from '../../typedefs/types';
 import { PermissionString } from 'discord.js';
 import { ERROR } from '../../typedefs/constants';
 

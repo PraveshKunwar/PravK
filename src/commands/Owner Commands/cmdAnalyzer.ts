@@ -1,10 +1,29 @@
 import {
    categories,
    CommandFunc
-} from '../../typedefs/CommandEvent';
+} from '../../typedefs/types';
 import { ERROR } from '../../typedefs/constants';
-import { cmdAnalyzer } from '../../handlers/CmdAnalyzer';
 import { MessageEmbed, Util } from 'discord.js';
+import { readFile } from 'fs/promises';
+import { Stats, statSync } from 'fs';
+
+interface Analyzer {
+   path: string;
+}
+const cmdAnalyzer = async ({
+   path
+}: Partial<Readonly<Analyzer>>): Promise<{
+   file: string;
+   stats: Stats;
+}> => {
+   const file = await readFile(path, 'utf8');
+   const stats = statSync(path, {
+      bigint: false,
+      throwIfNoEntry: true
+   });
+
+   return { file, stats };
+};
 
 export const run: CommandFunc = async (
    client,

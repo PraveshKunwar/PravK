@@ -2,7 +2,7 @@ import {
    categories,
    CommandFunc,
    CommandStruct
-} from '../../typedefs/CommandEvent';
+} from '../../typedefs/types';
 import { ERROR } from '../../typedefs/constants';
 import { PermissionString } from 'discord.js';
 
@@ -31,28 +31,28 @@ export const run: CommandFunc = async (
                fields: [
                   {
                      name: '🛠 Moderation',
-                     value: `${client.codeblock(
+                     value: `${client.util.codeblock(
                         categoryCmds('moderation')
                      )}`,
                      inline: true
                   },
                   {
                      name: '💵 Currency',
-                     value: `${client.codeblock(
+                     value: `${client.util.codeblock(
                         categoryCmds('currency')
                      )}`,
                      inline: true
                   },
                   {
                      name: '❓ Information',
-                     value: `${client.codeblock(
+                     value: `${client.util.codeblock(
                         categoryCmds('information')
                      )}`,
                      inline: true
                   },
                   {
                      name: '🎖 Miscellaneous',
-                     value: `${client.codeblock(
+                     value: `${client.util.codeblock(
                         categoryCmds('misc')
                      )}`,
                      inline: true
@@ -68,7 +68,7 @@ export const run: CommandFunc = async (
                   iconURL: client.user.displayAvatarURL()
                },
                title: 'Help Dashboard',
-               desc: `Welcome to the help section. Type ${client.codeblock(
+               desc: `Welcome to the help section. Type ${client.util.codeblock(
                   '<prefix>help <command name>'
                )} to quickly get help on a command. \n\n Here are a list of all the commands down below: \n\nIf you need more help: [Github](https://github.com/PraveshKunwar/Winbi) • Discord: **PraveshK#4056**
     `
@@ -108,12 +108,14 @@ export const run: CommandFunc = async (
                   fields: [
                      {
                         name: '📜 Description',
-                        value: client.codeblock(cmd.desc),
+                        value: client.util.codeblock(
+                           cmd.desc
+                        ),
                         inline: true
                      },
                      {
                         name: '❣ Usage',
-                        value: client.codeblock(
+                        value: client.util.codeblock(
                            Array.isArray(cmd.usage)
                               ? cmd.usage.join(', ')
                               : cmd.usage
@@ -122,7 +124,7 @@ export const run: CommandFunc = async (
                      },
                      {
                         name: '🚀 Aliases',
-                        value: client.codeblock(
+                        value: client.util.codeblock(
                            Array.isArray(cmd.aliases)
                               ? cmd.aliases.join(', ')
                               : typeof cmd.aliases ===
@@ -134,21 +136,21 @@ export const run: CommandFunc = async (
                      },
                      {
                         name: '⌚ Cooldown',
-                        value: client.codeblock(
+                        value: client.util.codeblock(
                            cmd.cooldown + ' seconds'
                         ),
                         inline: true
                      },
                      {
                         name: '📚 Category',
-                        value: client.codeblock(
+                        value: client.util.codeblock(
                            cmd.category
                         ),
                         inline: true
                      },
                      {
                         name: '🏆 Permissions',
-                        value: client.codeblock(
+                        value: client.util.codeblock(
                            Array.isArray(cmd.perms)
                               ? cmd.perms.join(', ')
                               : cmd.perms === null

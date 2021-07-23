@@ -1,5 +1,9 @@
 import { PermissionString } from 'discord.js';
-import { categories } from '../../typedefs/CommandEvent';
+import {
+   categories,
+   CommandFunc
+} from '../../typedefs/types';
+
 export const name = 'kick';
 export const aliases = ['boot'];
 export const desc = 'Kick any member from the server.';

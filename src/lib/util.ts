@@ -65,17 +65,26 @@ export interface EmbedData {
    url: string;
 }
 
+type Channels =
+   | 'text'
+   | 'voice'
+   | 'category'
+   | 'news'
+   | 'store'
+   | 'stage';
+
 export default class Utility {
    public async getChannel(
       message: Message,
       id?: Snowflake,
+      type?: Channels,
       name?: string
    ): Promise<GuildChannel> {
-      const channel: GuildChannel =
-         (await message.guild.channels.fetch(id)) ||
-         message.guild.channels.cache.find(
-            (i) => i.name === name
-         );
+      const channel: GuildChannel = id
+         ? await message.guild.channels.fetch(id)
+         : message.guild.channels.cache.find(
+              (i) => i.name === name && i.type === type
+           );
       return channel;
    }
    public async getUser(
@@ -136,5 +145,26 @@ export default class Utility {
       title ? EmbedGenerator.setTitle(title) : null;
       url ? EmbedGenerator.setURL(url) : null;
       return EmbedGenerator;
+   }
+   public codeblock(
+      text: string | number,
+      lang?: string
+   ): string {
+      return `\`\`\`${lang}\n${text}\`\`\``;
+   }
+   public oneblock(text: string | number | void): string {
+      return `\`${text}\``;
+   }
+   public randomString(length: number): string {
+      let result = '';
+      const chars =
+         'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      const len = chars.length;
+      for (let i = 0; i < length; i++) {
+         result += chars.charAt(
+            Math.floor(Math.random() * len)
+         );
+      }
+      return result;
    }
 }

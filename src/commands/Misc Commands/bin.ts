@@ -6,7 +6,7 @@ import sourcebin from 'sourcebin';
 import {
    categories,
    CommandFunc
-} from '../../typedefs/CommandEvent';
+} from '../../typedefs/types';
 import { ERROR } from '../../typedefs/constants';
 
 export const run: CommandFunc = async (
@@ -69,7 +69,7 @@ export const run: CommandFunc = async (
                         await client.util.embed({
                            desc: `${
                               ERROR.UNKNOWN
-                           }${client.oneblock(
+                           }${client.util.oneblock(
                               `Message: ${err.message} | Code: ${err.code}`
                            )}`,
                            color: 'RED',

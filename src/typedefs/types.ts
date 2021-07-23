@@ -1,5 +1,31 @@
-import { Message, PermissionString } from 'discord.js';
+import {
+   Message,
+   PermissionString,
+   Snowflake
+} from 'discord.js';
 import { Winbi } from '../client';
+
+export interface JokeResponse {
+   id: number;
+   type: string;
+   setup: string;
+   punchline: string;
+}
+
+export interface QuoteResponse {
+   _id: string;
+   tags: string[];
+   content: string;
+   author: string;
+   authorSlug: string;
+   datedAdded: string;
+   dateModified: string;
+}
+
+export interface HelperOptions {
+   time?: number | Date | string;
+   id?: Snowflake;
+}
 
 export interface CommandFunc {
    (client: Winbi, message: Message, args: string[]):
@@ -9,7 +35,7 @@ export interface CommandFunc {
 }
 
 export interface EventFunc {
-   (client: Winbi, ...args: unknown[]):
+   (client: Winbi, ...args: any[]):
       | void
       | Promise<unknown>
       | Promise<void>;

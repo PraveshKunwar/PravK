@@ -1,18 +1,11 @@
 import { Interaction } from 'discord.js';
-import { EventFunc } from '../typedefs/CommandEvent';
+import { EventFunc } from '../typedefs/types';
 
 export const run: EventFunc = async (
    client,
    interaction: Interaction
 ) => {
-   if (!interaction.isCommand()) return;
-
-   if (interaction.isButton()) {
-      await interaction.reply('HIOHIHIHIHIH');
-   }
-   if (interaction.id === 'primary') {
-      await interaction.reply({ content: 'HJIHJIHI' });
-   }
+   console.log(interaction);
 };
 
 export const name = 'interaction';

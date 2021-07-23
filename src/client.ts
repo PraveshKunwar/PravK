@@ -5,16 +5,17 @@ import {
    Snowflake
 } from 'discord.js';
 import glob from 'glob';
-import { codeblock, oneblock } from './lib/codeblock';
 import DBHandler from './handlers/DBHandler';
 import MusicHandler from './handlers/MusicHandler';
+import TicketHandler from './handlers/TicketHandler';
 import dotenv from 'dotenv';
 import {
    CommandStruct,
    EventStruct,
    Pattern
-} from './typedefs/CommandEvent';
+} from './typedefs/types';
 import Utility from './lib/util';
+import consola, { Consola } from 'consola';
 dotenv.config();
 
 class Winbi extends Client {
@@ -50,13 +51,15 @@ class Winbi extends Client {
       string,
       Collection<Snowflake, number>
    >();
-   public codeblock = codeblock;
-   public oneblock = oneblock;
    public util = new Utility();
-   public DBHandler: DBHandler = new DBHandler();
+   public DBHandler: DBHandler = new DBHandler(this);
    public MusicHandler: MusicHandler = new MusicHandler(
       this
    );
+   public TicketHandler: TicketHandler = new TicketHandler(
+      this
+   );
+   public logger: Consola = consola;
    public async cmdEvtHandler({
       CmdPattern,
       EvtPattern
@@ -64,7 +67,10 @@ class Winbi extends Client {
       Readonly<Pick<Pattern, 'CmdPattern' | 'EvtPattern'>>
    >): Promise<void> {
       glob(CmdPattern, (err: Error, cmdFiles: string[]) => {
-         if (err) return console.error(err);
+         if (err)
+            return this.logger.error(
+               new Error(err.message)
+            );
          cmdFiles.map(async (file: string) => {
             if (
                file.endsWith('.js') ||
@@ -85,7 +91,10 @@ class Winbi extends Client {
          });
       });
       glob(EvtPattern, (err: Error, evtFiles: string[]) => {
-         if (err) return console.error(err);
+         if (err)
+            return this.logger.error(
+               new Error(err.message)
+            );
          evtFiles.map(async (file: string) => {
             if (
                file.endsWith('.js') ||
@@ -111,6 +120,10 @@ class Winbi extends Client {
          this.cmdEvtHandler({
             CmdPattern: `${__dirname}/commands/**/*{.js,.ts}`,
             EvtPattern: `${__dirname}/events/**/*{.js,.ts}`
+         }).then(() => {
+            this.logger.success(
+               'Commands and events have been loaded.'
+            );
          });
       }
    }

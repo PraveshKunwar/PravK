@@ -1,5 +1,5 @@
 import { PermissionString } from 'discord.js';
-import { categories } from '../../typedefs/CommandEvent';
+import { categories } from '../../typedefs/types';
 
 export const name = 'bal';
 export const aliases = ['balance', 'account'];
