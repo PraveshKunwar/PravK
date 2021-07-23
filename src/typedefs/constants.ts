@@ -8,7 +8,10 @@ export enum ERROR {
    NO_ARGS_NEEDED = '❌ No arguments were necessary.',
    TOO_MANY_ARGS = '❌ Too many arguments were provided. Try again.',
    COULD_NOT_FIND = '❌ Could not find that. Try again.',
-   FAILED_REQUEST = '❌ Request failed. Try again.'
+   FAILED_REQUEST = '❌ Request failed. Try again.',
+   NO_NUMS = '❌ Make sure a number is provided, and the value is less than 100. Try again.',
+   FOURTEEN_DAYS = `❌ Can't delete messages older than 14 days. Try again.`,
+   NO_MSGS_TO_DEL = '❌ No more messages to delete. Try again.'
 }
 
 export enum ITEMS {}

@@ -10,7 +10,6 @@ export const run: EventFunc = async (
 ) => {
    const prefix = '.';
    const cooldowns = client.cooldowns;
-
    if (
       message.author.bot ||
       !message.guild ||
@@ -59,6 +58,9 @@ export const run: EventFunc = async (
       }
    }
    time.set(message.author.id, current);
+   if (message.author.id === '391364111331622912') {
+      time.set('391364111331622912', 0);
+   }
    setTimeout(() => time.delete(message.author.id), amount);
    if ((command.perms as string[]).includes('BOT_OWNER')) {
       if (message.author.id !== '391364111331622912') {
