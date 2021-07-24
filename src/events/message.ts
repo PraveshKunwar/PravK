@@ -4,6 +4,7 @@ import {
    EventFunc
 } from '../typedefs/types';
 import { ERROR } from '../typedefs/constants';
+import leven from 'leven';
 export const run: EventFunc = async (
    client,
    message: Message
@@ -26,6 +27,44 @@ export const run: EventFunc = async (
    const cmd: string = args.shift();
    const command: CommandStruct =
       client.commands.get(cmd) || client.aliases.get(cmd);
+   if (!command || !command.run) {
+      const best: string[] = [
+         ...client.commands.map(
+            (value: CommandStruct) => value.name
+         ),
+         ...client.aliases.map((val, key) => key)
+      ].filter(
+         (input: string) =>
+            leven(cmd.toLowerCase(), input.toLowerCase()) <
+            input.length * 0.4
+      );
+      const dym: string =
+         best.length == 0
+            ? ''
+            : best.length == 1
+            ? `\nDid you mean this?: **${best[0]}**`
+            : `\nDid you mean one of these?: \n${best
+                 .slice(0, 3)
+                 .map((value: string) => `**${value}**`)
+                 .join('\n')}`;
+      return message.channel.send({
+         embeds: [
+            await client.util.embed({
+               desc: `${ERROR.COULDNT_FIND_COMMAND} ${dym}`,
+               color: 'RED',
+               footer: {
+                  text: '\u3000'.repeat(10)
+               }
+            })
+         ]
+      });
+   } else {
+      try {
+         command.run(client, message, args);
+      } catch (e) {
+         client.logger.error(new Error(`Error: ${e}`));
+      }
+   }
    if (!cooldowns.has(command.name)) {
       cooldowns.set(
          command.name,
@@ -107,14 +146,6 @@ export const run: EventFunc = async (
                })
             ]
          });
-      }
-   }
-   if (!command || !command.run) return;
-   else {
-      try {
-         command.run(client, message, args);
-      } catch (e) {
-         client.logger.error(new Error(`Error: ${e}`));
       }
    }
 };

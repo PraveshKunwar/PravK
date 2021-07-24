@@ -11,7 +11,8 @@ export enum ERROR {
    FAILED_REQUEST = '❌ Request failed. Try again.',
    NO_NUMS = '❌ Make sure a number is provided, and the value is less than 100. Try again.',
    FOURTEEN_DAYS = `❌ Can't delete messages older than 14 days. Try again.`,
-   NO_MSGS_TO_DEL = '❌ No more messages to delete. Try again.'
+   NO_MSGS_TO_DEL = '❌ No more messages to delete. Try again.',
+   COULDNT_FIND_COMMAND = "❌ Couldn't find that command."
 }
 
 export enum ITEMS {}

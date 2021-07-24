@@ -2,6 +2,7 @@ import {
    ButtonInteraction,
    CategoryChannel,
    Client,
+   GuildChannel,
    Message,
    TextChannel
 } from 'discord.js';
@@ -29,8 +30,9 @@ export default class TicketHandler {
             'category',
             'tickets'
          )) as CategoryChannel | undefined;
-      const categoryPosition =
-         message.guild.channels.cache.first().position;
+      const categoryPosition = (
+         message.guild.channels.cache.first() as GuildChannel
+      ).position;
       if (
          !categoryChannel ||
          categoryChannel === undefined

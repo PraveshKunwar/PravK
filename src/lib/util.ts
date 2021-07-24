@@ -8,7 +8,8 @@ import {
    EmbedFieldData,
    FileOptions,
    MessageAttachment,
-   MessageEmbed
+   MessageEmbed,
+   ThreadChannel
 } from 'discord.js';
 
 type ColorResolvable =
@@ -79,8 +80,8 @@ export default class Utility {
       id?: Snowflake,
       type?: Channels,
       name?: string
-   ): Promise<GuildChannel> {
-      const channel: GuildChannel = id
+   ): Promise<GuildChannel | ThreadChannel> {
+      const channel: GuildChannel | ThreadChannel = id
          ? await message.guild.channels.fetch(id)
          : message.guild.channels.cache.find(
               (i) => i.name === name && i.type === type
