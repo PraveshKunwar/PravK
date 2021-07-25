@@ -78,9 +78,9 @@ class Winbi extends Client {
             ) {
                const cmd: Required<
                   Readonly<CommandStruct>
-               > = (await import(file)) as Required<
-                  Readonly<CommandStruct>
-               >;
+               > = new (await import(file)).default(
+                  this
+               ) as Required<Readonly<CommandStruct>>;
                this.commands.set(cmd.name, cmd);
                if (cmd.aliases) {
                   cmd.aliases.map((alias: string) => {

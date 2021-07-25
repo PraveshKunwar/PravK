@@ -35,7 +35,7 @@ export interface CommandFunc {
 }
 
 export interface EventFunc {
-   (client: Winbi, ...args: any[]):
+   (client: Winbi, ...args: unknown[]):
       | void
       | Promise<unknown>
       | Promise<void>;
