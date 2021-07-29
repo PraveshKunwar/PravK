@@ -1,4 +1,5 @@
-import { Client, PermissionString } from 'discord.js';
+import { PermissionString } from 'discord.js';
+import { Winbi } from '../client';
 import {
    categories,
    CommandFunc,
@@ -6,7 +7,7 @@ import {
 } from '../typedefs/types';
 
 export default class Command {
-   public client: Client;
+   public client: Winbi;
    public name?: string;
    public run?: CommandFunc;
    public aliases?: string[];
@@ -16,7 +17,7 @@ export default class Command {
    public category?: categories;
    public usage?: string | string[];
    public constructor(
-      client: Client,
+      client: Winbi,
       options: CommandStruct
    ) {
       this.client = client;

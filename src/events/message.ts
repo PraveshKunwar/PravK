@@ -11,6 +11,24 @@ export const run: EventFunc = async (
 ) => {
    const prefix = '.';
    const cooldowns = client.cooldowns;
+   if (message.partial) await message.fetch();
+   if (
+      message.content.match(
+         new RegExp(`^<@!?${client.user.id}> ?$`)
+      )
+   ) {
+      return message.channel.send({
+         embeds: [
+            await client.util.embed({
+               desc: `❓ Type ${prefix}help to get more information.`,
+               color: 'RED',
+               footer: {
+                  text: '\u3000'.repeat(10)
+               }
+            })
+         ]
+      });
+   }
    if (
       message.author.bot ||
       !message.guild ||
@@ -50,7 +68,7 @@ export const run: EventFunc = async (
       return message.channel.send({
          embeds: [
             await client.util.embed({
-               desc: `${ERROR.COULDNT_FIND_COMMAND} ${dym}`,
+               desc: `${ERROR.COULDNT_FIND_COMMAND} ${dym} \n\n Use **${prefix}** help to get info on commands.`,
                color: 'RED',
                footer: {
                   text: '\u3000'.repeat(10)
@@ -116,15 +134,18 @@ export const run: EventFunc = async (
          });
       }
    } else if (
-      !message.guild.me.permissions.has(command.perms)
+      !message.guild.me.permissions.has(command.perms) ||
+      !message.member.permissions.has(command.perms)
    ) {
       if (command.perms.length >= 2) {
          return message.channel.send({
             embeds: [
                await client.util.embed({
-                  desc: `❌ Missing Perms: \n**${client.util.codeblock(
-                     command.perms.join(', ')
-                  )}**\nPlease give me the following permissions in order for me to properly run in the server.`,
+                  desc: `**${client.util.codeblock(
+                     `❌ Missing Perms: ${command.perms.join(
+                        ', '
+                     )}`
+                  )}**`,
                   color: 'RED',
                   footer: {
                      text: '\u3000'.repeat(10)
@@ -136,9 +157,9 @@ export const run: EventFunc = async (
          return message.channel.send({
             embeds: [
                await client.util.embed({
-                  desc: `❌ Missing Perms: \n**${client.util.codeblock(
-                     command.perms[0]
-                  )}**\nPlease give me the following permissions in order for me to properly run in the server.`,
+                  desc: `**${client.util.codeblock(
+                     `❌ Missing Perms: ${command.perms[0]}`
+                  )}**`,
                   color: 'RED',
                   footer: {
                      text: '\u3000'.repeat(10)

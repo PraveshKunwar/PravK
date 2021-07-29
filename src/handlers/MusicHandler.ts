@@ -1,16 +1,16 @@
-import { Client, Message } from 'discord.js';
+import { Message } from 'discord.js';
 import { Winbi } from '../client';
 
 export default class MusicHandler {
-   private client: Client;
-   public constructor(client: Client) {
+   private client: Winbi;
+   public constructor(client: Winbi) {
       this.client = client;
    }
    public async checkPerms(msg: Message): Promise<Message> {
       if (!msg.member.voice.channel) {
          return msg.channel.send({
             embeds: [
-               await (this.client as Winbi).util.embed({
+               await this.client.util.embed({
                   desc: `❌ Need to be in voice channel in order for me to join. Try again.`,
                   color: 'RED',
                   footer: {
@@ -33,7 +33,7 @@ export default class MusicHandler {
       ) {
          return msg.channel.send({
             embeds: [
-               await (this.client as Winbi).util.embed({
+               await this.client.util.embed({
                   desc: `Missing Perms: **SPEAK | CONNECT**`,
                   color: 'RED',
                   footer: {

@@ -16,9 +16,23 @@ import {
 } from './typedefs/types';
 import Utility from './lib/util';
 import consola, { Consola } from 'consola';
+import ReminderSession from './helpers/Helper';
 dotenv.config();
 
 class Winbi extends Client {
+   public util: Utility;
+   public DBHandler: DBHandler;
+   public MusicHandler: MusicHandler;
+   public TicketHandler: TicketHandler;
+   public Reminder: ReminderSession;
+   public logger: Consola;
+   public commands: Collection<string, CommandStruct>;
+   public events: Collection<string, EventStruct>;
+   public aliases: Collection<string, CommandStruct>;
+   public cooldowns: Collection<
+      string,
+      Collection<Snowflake, number>
+   >;
    public constructor() {
       super({
          allowedMentions: {
@@ -37,29 +51,17 @@ class Winbi extends Client {
          ],
          retryLimit: Number.POSITIVE_INFINITY
       });
+      this.util = new Utility(this);
+      this.DBHandler = new DBHandler(this);
+      this.MusicHandler = new MusicHandler(this);
+      this.TicketHandler = new TicketHandler(this);
+      this.Reminder = new ReminderSession(this);
+      this.commands = new Collection();
+      this.events = new Collection();
+      this.aliases = new Collection();
+      this.cooldowns = new Collection();
+      this.logger = consola;
    }
-   public commands: Collection<string, CommandStruct> =
-      new Collection<string, CommandStruct>();
-   public events: Collection<string, EventStruct> =
-      new Collection<string, EventStruct>();
-   public aliases: Collection<string, CommandStruct> =
-      new Collection<string, CommandStruct>();
-   public cooldowns: Collection<
-      string,
-      Collection<Snowflake, number>
-   > = new Collection<
-      string,
-      Collection<Snowflake, number>
-   >();
-   public util = new Utility();
-   public DBHandler: DBHandler = new DBHandler(this);
-   public MusicHandler: MusicHandler = new MusicHandler(
-      this
-   );
-   public TicketHandler: TicketHandler = new TicketHandler(
-      this
-   );
-   public logger: Consola = consola;
    public async cmdEvtHandler({
       CmdPattern,
       EvtPattern
@@ -114,9 +116,7 @@ class Winbi extends Client {
    public async start(token: string): Promise<void> {
       if (this instanceof Client && token) {
          this.login(token);
-         this.DBHandler.connect(
-            process.env.MONGO_URI as string
-         );
+         this.DBHandler.connect(process.env.MONGO_URI);
          this.cmdEvtHandler({
             CmdPattern: `${__dirname}/commands/**/*{.js,.ts}`,
             EvtPattern: `${__dirname}/events/**/*{.js,.ts}`

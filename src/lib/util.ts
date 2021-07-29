@@ -1,5 +1,4 @@
 import {
-   Client,
    GuildChannel,
    GuildMember,
    Message,
@@ -9,8 +8,10 @@ import {
    FileOptions,
    MessageAttachment,
    MessageEmbed,
-   ThreadChannel
+   ThreadChannel,
+   Guild
 } from 'discord.js';
+import { Winbi } from '../client';
 
 type ColorResolvable =
    | 'DEFAULT'
@@ -75,6 +76,24 @@ type Channels =
    | 'stage';
 
 export default class Utility {
+   public client: Winbi;
+   public constructor(client: Winbi) {
+      this.client = client;
+   }
+   public async getGuild(
+      message: Message,
+      id?: Snowflake,
+      name?: string
+   ): Promise<Guild> {
+      const guild: Guild =
+         this.client.guilds.cache.get(id) ||
+         this.client.guilds.cache.find(
+            (i) => i.name === name
+         ) ||
+         (await this.client.guilds.fetch(id)) ||
+         (await message.guild.fetch());
+      return guild;
+   }
    public async getChannel(
       message: Message,
       id?: Snowflake,
@@ -91,20 +110,55 @@ export default class Utility {
    public async getUser(
       message: Message,
       id?: Snowflake,
-      username?: string,
-      client?: Client
-   ): Promise<User | GuildMember> {
-      const user: User | GuildMember =
-         (await client.users.fetch(id)) ||
-         client.users.cache.get(id) ||
-         client.users.cache.find(
+      username?: string
+   ): Promise<User> {
+      const user: User =
+         (await this.client.users.fetch(id)) ||
+         this.client.users.cache.get(id) ||
+         this.client.users.cache.find(
             (i) => i.username === username
-         ) ||
+         );
+
+      return user;
+   }
+   public async getMember(
+      message: Message,
+      id?: Snowflake,
+      username?: string
+   ): Promise<GuildMember> {
+      const member: GuildMember =
+         message.guild.members.resolve(id) ||
          message.guild.members.cache.get(id) ||
          message.guild.members.cache.find(
             (i) => i.user.username === username
          );
-      return user;
+      return member;
+   }
+   public async checkRolePosition(
+      member: GuildMember,
+      target: GuildMember
+   ): Promise<boolean | 'same'> {
+      if (
+         member.roles.highest.position >
+         target.roles.highest.position
+      )
+         return true;
+      else if (
+         target.roles.highest.position >
+         member.roles.highest.position
+      )
+         return false;
+      else if (
+         target.roles.highest.position ==
+         member.roles.highest.position
+      )
+         return 'same';
+   }
+   public parseMentions(mention: string): Snowflake {
+      const match = mention.match(/^<@!?(\d+)>$/);
+      if (!match) return;
+      const id: Snowflake = match[1] as Snowflake;
+      return id;
    }
    public async embed({
       fields,

@@ -22,7 +22,7 @@ export interface QuoteResponse {
    dateModified: string;
 }
 
-export interface HelperOptions {
+export interface ReminderOptions {
    time?: number | Date | string;
    id?: Snowflake;
 }

@@ -1,7 +1,6 @@
 import {
    ButtonInteraction,
    CategoryChannel,
-   Client,
    GuildChannel,
    Message,
    TextChannel
@@ -9,22 +8,22 @@ import {
 import { Winbi } from '../client';
 
 export default class TicketHandler {
-   private client: Client;
-   public constructor(client: Client) {
+   private client: Winbi;
+   public constructor(client: Winbi) {
       this.client = client;
    }
    public async nameTicketSession(
       message: Message
    ): Promise<string> {
-      return `ticket-${message.author.discriminator}-${(
-         this.client as Winbi
-      ).util.randomString(4)}`;
+      return `ticket-${
+         message.author.discriminator
+      }-${this.client.util.randomString(4)}`;
    }
    public async createTicketSession(
       message: Message
    ): Promise<TextChannel> {
       const categoryChannel: CategoryChannel | undefined =
-         (await (this.client as Winbi).util.getChannel(
+         (await this.client.util.getChannel(
             message,
             null,
             'category',
@@ -102,7 +101,7 @@ export default class TicketHandler {
    ): Promise<void> {
       await interaction.reply({
          embeds: [
-            await (this.client as Winbi).util.embed({
+            await this.client.util.embed({
                timestamp: true,
                color: 'NAVY',
                desc: `Closing the ticket in 5 seconds...`,
@@ -111,9 +110,8 @@ export default class TicketHandler {
                   interaction.user.displayAvatarURL(),
                footer: {
                   text: 'Winbi Bot • Created By PraveshK',
-                  iconURL: (
-                     this.client as Winbi
-                  ).user.displayAvatarURL()
+                  iconURL:
+                     this.client.user.displayAvatarURL()
                }
             })
          ]
