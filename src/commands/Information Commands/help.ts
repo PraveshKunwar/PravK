@@ -4,7 +4,7 @@ import {
 } from '../../typedefs/types';
 import { ERROR } from '../../typedefs/constants';
 import { Winbi } from '../../client';
-import Command from '../../handlers/CommandHandler';
+import { Command } from '../../handlers/CmdEvtHandler';
 
 export default class Help extends Command {
    public constructor(client: Winbi) {

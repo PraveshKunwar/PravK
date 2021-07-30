@@ -103,9 +103,9 @@ class Winbi extends Client {
                file.match(/.*\.js$/)
             ) {
                const evt: Required<Readonly<EventStruct>> =
-                  (await import(file)) as Required<
-                     Readonly<EventStruct>
-                  >;
+                  new (await import(file)).default(
+                     this
+                  ) as Required<Readonly<EventStruct>>;
                this.events.set(evt.name, evt);
                this.on(evt.name, evt.run.bind(null, this));
             }

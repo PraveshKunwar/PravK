@@ -14,7 +14,8 @@ export enum ERROR {
    NO_MSGS_TO_DEL = '❌ No more messages to delete. Try again.',
    COULDNT_FIND_COMMAND = "❌ Couldn't find that command.",
    HIGHER_SAME_ROLE = "❌ Couldn't target that member as they have a higher or same role position as you. Try again.",
-   USER_NO_EXIST = '❌ User does not exist. Try again.'
+   USER_NO_EXIST = '❌ User does not exist. Try again.',
+   MENTION_USER = '❌ No mention found. Try again.'
 }
 
 export enum ITEMS {}

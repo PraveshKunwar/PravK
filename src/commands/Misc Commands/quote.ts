@@ -1,7 +1,7 @@
 import { ERROR } from '../../typedefs/constants';
 import axios, { AxiosResponse } from 'axios';
 import { QuoteResponse } from '../../typedefs/types';
-import Command from '../../handlers/CommandHandler';
+import { Command } from '../../handlers/CmdEvtHandler';
 import { Winbi } from '../../client';
 
 export default class Quote extends Command {

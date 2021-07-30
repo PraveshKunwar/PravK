@@ -1,6 +1,6 @@
 import { ERROR } from '../../typedefs/constants';
 import { evaluate } from 'mathjs';
-import Command from '../../handlers/CommandHandler';
+import { Command } from '../../handlers/CmdEvtHandler';
 import { Winbi } from '../../client';
 
 export default class Calc extends Command {

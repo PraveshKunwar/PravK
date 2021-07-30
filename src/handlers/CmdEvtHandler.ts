@@ -3,10 +3,12 @@ import { Winbi } from '../client';
 import {
    categories,
    CommandFunc,
-   CommandStruct
+   CommandStruct,
+   EventFunc,
+   EventStruct
 } from '../typedefs/types';
 
-export default class Command {
+export class Command {
    public client: Winbi;
    public name?: string;
    public run?: CommandFunc;
@@ -29,5 +31,16 @@ export default class Command {
       this.cooldown = options.cooldown;
       this.category = options.category;
       this.usage = options.usage;
+   }
+}
+
+export class Event {
+   public client: Winbi;
+   public name: string;
+   public run: EventFunc;
+   public constructor(client: Winbi, options: EventStruct) {
+      this.client = client;
+      this.name = options.name;
+      this.run = options.run;
    }
 }

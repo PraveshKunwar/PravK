@@ -2,7 +2,7 @@ import { ERROR } from '../../typedefs/constants';
 import { MessageEmbed, Util } from 'discord.js';
 import { readFile } from 'fs/promises';
 import { Stats, statSync } from 'fs';
-import Command from '../../handlers/CommandHandler';
+import { Command } from '../../handlers/CmdEvtHandler';
 import { Winbi } from '../../client';
 
 interface Analyzer {

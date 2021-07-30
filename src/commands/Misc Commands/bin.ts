@@ -2,7 +2,7 @@ import { DiscordAPIError } from 'discord.js';
 import sourcebin from 'sourcebin';
 import { ERROR } from '../../typedefs/constants';
 import { Winbi } from '../../client';
-import Command from '../../handlers/CommandHandler';
+import { Command } from '../../handlers/CmdEvtHandler';
 
 export default class Bin extends Command {
    public constructor(client: Winbi) {

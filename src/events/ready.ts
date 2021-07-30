@@ -1,17 +1,25 @@
-import { EventFunc } from '../typedefs/types';
+import { Winbi } from '../client';
+import { Event } from '../handlers/CmdEvtHandler';
 
-export const run: EventFunc = async (client) => {
-   client.logger.success(`${client.user.tag} is online!`);
-   await client.Reminder.loadHelperSession();
-   client.user.setPresence({
-      activities: [
-         {
-            name: 'Type @Winbi !!',
-            type: 'PLAYING'
+export default class Ready extends Event {
+   public constructor(client: Winbi) {
+      super(client, {
+         name: 'ready',
+         run: async (client) => {
+            client.logger.success(
+               `${client.user.tag} is online!`
+            );
+            await client.Reminder.loadHelperSession();
+            client.user.setPresence({
+               activities: [
+                  {
+                     name: 'Type @Winbi !!',
+                     type: 'PLAYING'
+                  }
+               ],
+               status: 'dnd'
+            });
          }
-      ],
-      status: 'dnd'
-   });
-};
-
-export const name = 'ready';
+      });
+   }
+}

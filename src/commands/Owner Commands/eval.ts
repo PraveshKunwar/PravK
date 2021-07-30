@@ -1,7 +1,7 @@
 import { inspect } from 'util';
 import { ERROR } from '../../typedefs/constants';
 import * as ts from 'typescript';
-import Command from '../../handlers/CommandHandler';
+import { Command } from '../../handlers/CmdEvtHandler';
 import { Winbi } from '../../client';
 
 export default class Eval extends Command {

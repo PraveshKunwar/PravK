@@ -3,16 +3,15 @@ import { Winbi } from '../../client';
 import { Snowflake } from 'discord.js';
 import { ERROR } from '../../typedefs/constants';
 
-export default class Kick extends Command {
+export default class Ban extends Command {
    public constructor(client: Winbi) {
       super(client, {
-         name: 'kick',
-         aliases: ['boot'],
-         desc: 'Kick any member from the server.',
-         perms: ['SEND_MESSAGES', 'KICK_MEMBERS'],
+         name: 'ban',
+         desc: 'Ban any member from the server.',
+         perms: ['SEND_MESSAGES', 'BAN_MEMBERS'],
          cooldown: 10,
          category: 'moderation',
-         usage: '<prefix>kick <member> <optional reason>',
+         usage: '<prefix>ban <member> <optional reason>',
          run: async (client, message, args) => {
             if (!args[0]) {
                return message.channel.send({
@@ -27,7 +26,7 @@ export default class Kick extends Command {
                   ]
                });
             }
-            const memberToKick =
+            const memberToBan =
                (await client.util.getMember(
                   message,
                   client.util.parseMentions(args[0])
@@ -36,10 +35,7 @@ export default class Kick extends Command {
                   message,
                   args[0] as Snowflake
                ));
-            if (
-               !memberToKick ||
-               memberToKick === undefined
-            ) {
+            if (!memberToBan || memberToBan === undefined) {
                return message.channel.send({
                   embeds: [
                      await client.util.embed({
@@ -60,7 +56,7 @@ export default class Kick extends Command {
                return message.channel.send({
                   embeds: [
                      await client.util.embed({
-                        desc: `❌ Cannot kick myself.`,
+                        desc: `❌ Cannot ban myself.`,
                         color: 'RED',
                         footer: {
                            text: '\u3000'.repeat(10)
@@ -75,7 +71,7 @@ export default class Kick extends Command {
                return message.channel.send({
                   embeds: [
                      await client.util.embed({
-                        desc: `❌ Cannot kick yourself.`,
+                        desc: `❌ Cannot ban yourself.`,
                         color: 'RED',
                         footer: {
                            text: '\u3000'.repeat(10)
@@ -87,7 +83,7 @@ export default class Kick extends Command {
             const checkRoles =
                await client.util.checkRolePosition(
                   message.member,
-                  memberToKick
+                  memberToBan
                );
             if (
                checkRoles === false ||
@@ -105,11 +101,11 @@ export default class Kick extends Command {
                   ]
                });
             }
-            if (!memberToKick.kickable) {
+            if (!memberToBan.bannable) {
                return message.channel.send({
                   embeds: [
                      await client.util.embed({
-                        desc: `❌ Mentioned member was not kickable. Try again.`,
+                        desc: `❌ Mentioned member was not bannable. Try again.`,
                         color: 'RED',
                         footer: {
                            text: '\u3000'.repeat(10)
@@ -118,8 +114,8 @@ export default class Kick extends Command {
                   ]
                });
             } else {
-               memberToKick
-                  .kick()
+               memberToBan
+                  .ban({ reason })
                   .then(async (member) => {
                      return message.channel.send({
                         embeds: [
@@ -136,7 +132,7 @@ export default class Kick extends Command {
                                  iconURL:
                                     client.user.displayAvatarURL()
                               },
-                              desc: `**⚒️ Kicked**: ${
+                              desc: `**⚒️ Banned**: ${
                                  member.user.tag
                               } \n\n **📜 Reason**: ${
                                  reason

@@ -1,5 +1,5 @@
 import { Winbi } from '../../client';
-import Command from '../../handlers/CommandHandler';
+import { Command } from '../../handlers/CmdEvtHandler';
 
 export default class Balance extends Command {
    public constructor(client: Winbi) {
