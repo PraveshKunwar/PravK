@@ -46,7 +46,8 @@ export type categories =
    | 'misc'
    | 'information'
    | 'moderation'
-   | 'currency';
+   | 'currency'
+   | 'music';
 
 export interface CommandStruct {
    name?: string;
@@ -68,4 +69,10 @@ export interface Pattern {
    CmdPattern: string;
    EvtPattern: string;
    OtherPattern: string;
+}
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export function sealClass(constructor: Function): void {
+   Object.seal(constructor);
+   Object.seal(constructor.prototype);
 }

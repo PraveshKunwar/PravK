@@ -5,9 +5,11 @@ import {
    CommandFunc,
    CommandStruct,
    EventFunc,
-   EventStruct
+   EventStruct,
+   sealClass
 } from '../typedefs/types';
 
+@sealClass
 export class Command {
    public client: Winbi;
    public name?: string;
@@ -34,6 +36,7 @@ export class Command {
    }
 }
 
+@sealClass
 export class Event {
    public client: Winbi;
    public name: string;

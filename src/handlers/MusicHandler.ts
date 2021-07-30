@@ -1,5 +1,6 @@
 import { Message } from 'discord.js';
 import { Winbi } from '../client';
+import ytsr from 'ytsr';
 
 export default class MusicHandler {
    private client: Winbi;
@@ -44,8 +45,16 @@ export default class MusicHandler {
          });
       }
    }
-   public async play(): Promise<void> {
-      console.log(2);
+   public async play(
+      message: Message,
+      query: string
+   ): Promise<void> {
+      const result = await ytsr(query);
+      let res: string;
+      if (result.items[0].type === 'video') {
+         res = result.items[0].url;
+      }
+      this.client.DisTube.play(message, res);
    }
    public async stop(): Promise<void> {
       console.log(2);
