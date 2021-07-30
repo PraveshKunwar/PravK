@@ -9,8 +9,10 @@ import {
    MessageAttachment,
    MessageEmbed,
    ThreadChannel,
-   Guild
+   Guild,
+   CommandInteraction
 } from 'discord.js';
+import { ChannelTypes } from 'discord.js/typings/enums';
 import { Winbi } from '../client';
 
 type ColorResolvable =
@@ -67,21 +69,13 @@ export interface EmbedData {
    url: string;
 }
 
-type Channels =
-   | 'text'
-   | 'voice'
-   | 'category'
-   | 'news'
-   | 'store'
-   | 'stage';
-
 export default class Utility {
    public client: Winbi;
    public constructor(client: Winbi) {
       this.client = client;
    }
    public async getGuild(
-      message: Message,
+      interaction: CommandInteraction,
       id?: Snowflake,
       name?: string
    ): Promise<Guild> {
@@ -91,24 +85,27 @@ export default class Utility {
             (i) => i.name === name
          ) ||
          (await this.client.guilds.fetch(id)) ||
-         (await message.guild.fetch());
+         (await interaction.guild.fetch());
       return guild;
    }
    public async getChannel(
-      message: Message,
+      interaction: CommandInteraction,
       id?: Snowflake,
-      type?: Channels,
+      type?: Exclude<
+         keyof typeof ChannelTypes,
+         'DM' | 'GROUP_DM' | 'UNKNOWN'
+      >,
       name?: string
    ): Promise<GuildChannel | ThreadChannel> {
       const channel: GuildChannel | ThreadChannel = id
-         ? await message.guild.channels.fetch(id)
-         : message.guild.channels.cache.find(
+         ? await interaction.guild.channels.fetch(id)
+         : interaction.guild.channels.cache.find(
               (i) => i.name === name && i.type === type
            );
       return channel;
    }
    public async getUser(
-      message: Message,
+      interaction: CommandInteraction,
       id?: Snowflake,
       username?: string
    ): Promise<User> {
@@ -122,14 +119,14 @@ export default class Utility {
       return user;
    }
    public async getMember(
-      message: Message,
+      interaction: CommandInteraction,
       id?: Snowflake,
       username?: string
    ): Promise<GuildMember> {
       const member: GuildMember =
-         message.guild.members.resolve(id) ||
-         message.guild.members.cache.get(id) ||
-         message.guild.members.cache.find(
+         interaction.guild.members.resolve(id) ||
+         interaction.guild.members.cache.get(id) ||
+         interaction.guild.members.cache.find(
             (i) => i.user.username === username
          );
       return member;

@@ -17,7 +17,7 @@
       "axios": "^0.21.1",
       "cacheable-request": "^7.0.2",
       "consola": "^2.15.3",
-      "discord.js": "^13.0.0-dev.807ea2d3c197c7c6556bd1c894114932f6657d49",
+      "discord.js": "^13.0.0-dev.2675b08.1627646567",
       "distube": "^3.0.0-alpha.17",
       "dotenv": "^10.0.0",
       "eslint": "^7.30.0",

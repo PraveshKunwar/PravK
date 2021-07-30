@@ -1,6 +1,6 @@
 import { Command } from '../../handlers/CmdEvtHandler';
 import { Winbi } from '../../client';
-import { Snowflake } from 'discord.js';
+import { GuildMember, Snowflake, User } from 'discord.js';
 import { ERROR } from '../../typedefs/constants';
 
 export default class Kick extends Command {
@@ -12,10 +12,20 @@ export default class Kick extends Command {
          perms: ['SEND_MESSAGES', 'KICK_MEMBERS'],
          cooldown: 10,
          category: 'moderation',
-         usage: '<prefix>kick <member> <optional reason>',
-         run: async (client, message, args) => {
+         usage: '<prefix>kick <member> <reason>',
+         slashCommandOptions: {
+            options: [
+               {
+                  name: 'user',
+                  type: 'USER',
+                  description:
+                     'The member that is going to be kicked.'
+               }
+            ]
+         },
+         run: async (client, interaction, args) => {
             if (!args[0]) {
-               return message.channel.send({
+               return interaction.channel.send({
                   embeds: [
                      await client.util.embed({
                         desc: ERROR.MENTION_USER,
@@ -29,18 +39,22 @@ export default class Kick extends Command {
             }
             const memberToKick =
                (await client.util.getMember(
-                  message,
-                  client.util.parseMentions(args[0])
+                  interaction,
+                  client.util.parseMentions(
+                     interaction.options.get('user')
+                        .value as string
+                  )
                )) ||
                (await client.util.getMember(
-                  message,
-                  args[0] as Snowflake
+                  interaction,
+                  interaction.options.get('user')
+                     .value as Snowflake
                ));
             if (
                !memberToKick ||
                memberToKick === undefined
             ) {
-               return message.channel.send({
+               return interaction.channel.send({
                   embeds: [
                      await client.util.embed({
                         desc: ERROR.USER_NO_EXIST,
@@ -52,12 +66,15 @@ export default class Kick extends Command {
                   ]
                });
             }
-            const reason = args.slice(1).join(' ');
+            const reason =
+               interaction.options.get('reason').value;
             if (
-               client.util.parseMentions(args[0]) ===
-               client.user.id
+               client.util.parseMentions(
+                  interaction.options.get('user')
+                     .value as string
+               ) === client.user.id
             ) {
-               return message.channel.send({
+               return interaction.channel.send({
                   embeds: [
                      await client.util.embed({
                         desc: `❌ Cannot kick myself.`,
@@ -69,10 +86,12 @@ export default class Kick extends Command {
                   ]
                });
             } else if (
-               client.util.parseMentions(args[0]) ===
-               message.member.id
+               client.util.parseMentions(
+                  interaction.options.get('user')
+                     .value as string
+               ) === interaction.member.user.id
             ) {
-               return message.channel.send({
+               return interaction.channel.send({
                   embeds: [
                      await client.util.embed({
                         desc: `❌ Cannot kick yourself.`,
@@ -86,14 +105,14 @@ export default class Kick extends Command {
             }
             const checkRoles =
                await client.util.checkRolePosition(
-                  message.member,
+                  interaction.member as GuildMember,
                   memberToKick
                );
             if (
                checkRoles === false ||
                checkRoles === 'same'
             ) {
-               return message.channel.send({
+               return interaction.channel.send({
                   embeds: [
                      await client.util.embed({
                         desc: ERROR.HIGHER_SAME_ROLE,
@@ -106,7 +125,7 @@ export default class Kick extends Command {
                });
             }
             if (!memberToKick.kickable) {
-               return message.channel.send({
+               return interaction.channel.send({
                   embeds: [
                      await client.util.embed({
                         desc: `❌ Mentioned member was not kickable. Try again.`,
@@ -121,16 +140,20 @@ export default class Kick extends Command {
                memberToKick
                   .kick()
                   .then(async (member) => {
-                     return message.channel.send({
+                     return interaction.channel.send({
                         embeds: [
                            await client.util.embed({
                               timestamp: true,
                               color: 'NAVY',
 
-                              authorName:
-                                 message.author.tag,
-                              authorIcon:
-                                 message.author.displayAvatarURL(),
+                              authorName: (
+                                 interaction.member
+                                    .user as User
+                              ).tag,
+                              authorIcon: (
+                                 interaction.member
+                                    .user as User
+                              ).displayAvatarURL(),
                               footer: {
                                  text: 'Winbi Bot • Created By PraveshK',
                                  iconURL:
@@ -148,7 +171,7 @@ export default class Kick extends Command {
                      });
                   })
                   .catch(async () => {
-                     return message.channel.send({
+                     return interaction.channel.send({
                         embeds: [
                            await client.util.embed({
                               desc: ERROR.UNKNOWN,

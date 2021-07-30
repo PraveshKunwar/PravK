@@ -6,6 +6,9 @@ export default class Ready extends Event {
       super(client, {
          name: 'ready',
          run: async (client) => {
+            await client.guilds.cache.forEach((g) => {
+               g.commands?.set(client.slashCommands);
+            });
             client.logger.success(
                `${client.user.tag} is online!`
             );

@@ -1,7 +1,7 @@
 import {
+   ApplicationCommand,
    Client,
    Collection,
-   Intents,
    Snowflake
 } from 'discord.js';
 import glob from 'glob';
@@ -22,6 +22,7 @@ import DisTube from 'distube';
 dotenv.config();
 
 class Winbi extends Client {
+   public slashCommands: ApplicationCommand[];
    public util: Utility;
    public DisTube: DisTube;
    public DBHandler: DBHandler;
@@ -44,7 +45,23 @@ class Winbi extends Client {
                '854045285611995167'
             ]
          },
-         intents: Intents.ALL,
+         intents: [
+            'DIRECT_MESSAGES',
+            'DIRECT_MESSAGE_REACTIONS',
+            'DIRECT_MESSAGE_TYPING',
+            'GUILDS',
+            'GUILD_BANS',
+            'GUILD_EMOJIS_AND_STICKERS',
+            'GUILD_INTEGRATIONS',
+            'GUILD_INVITES',
+            'GUILD_MEMBERS',
+            'GUILD_MESSAGES',
+            'GUILD_MESSAGE_REACTIONS',
+            'GUILD_MESSAGE_TYPING',
+            'GUILD_PRESENCES',
+            'GUILD_VOICE_STATES',
+            'GUILD_WEBHOOKS'
+         ],
          partials: [
             'MESSAGE',
             'GUILD_MEMBER',
@@ -54,6 +71,7 @@ class Winbi extends Client {
          ],
          retryLimit: Number.POSITIVE_INFINITY
       });
+      this.slashCommands = [];
       this.util = new Utility(this);
       this.DisTube = new DisTube(this, {
          emitNewSongOnly: true,
@@ -93,6 +111,9 @@ class Winbi extends Client {
                   this
                ) as Required<Readonly<CommandStruct>>;
                this.commands.set(cmd.name, cmd);
+               this.slashCommands.push(
+                  cmd.slashCommandOptions
+               );
                if (cmd.aliases) {
                   cmd.aliases.map((alias: string) => {
                      this.aliases.set(alias, cmd);

@@ -1,5 +1,11 @@
 import {
-   Message,
+   ApplicationCommand,
+   ApplicationCommandData,
+   ApplicationCommandOption,
+   ApplicationCommandOptionData,
+   ClientEvents,
+   CommandInteraction,
+   CommandInteractionOption,
    PermissionString,
    Snowflake
 } from 'discord.js';
@@ -28,10 +34,11 @@ export interface ReminderOptions {
 }
 
 export interface CommandFunc {
-   (client: Winbi, message: Message, args: string[]):
-      | void
-      | Promise<unknown>
-      | Promise<void>;
+   (
+      client: Winbi,
+      interaction: CommandInteraction,
+      args: CommandInteractionOption[]
+   ): void | Promise<unknown> | Promise<void>;
 }
 
 export interface EventFunc {
@@ -58,10 +65,11 @@ export interface CommandStruct {
    cooldown?: number;
    category?: categories;
    usage?: string | string[];
+   slashCommandOptions?: CommandInteractionOption;
 }
 
 export interface EventStruct {
-   name?: string;
+   name?: keyof ClientEvents;
    run?: EventFunc;
 }
 
