@@ -13,10 +13,10 @@ export default class Calc extends Command {
          cooldown: 10,
          category: 'misc',
          usage: '<prefix>calc <expression>',
-         run: async (client, message, args) => {
+         run: async (client, interaction, args) => {
             const expression = args.join(' ');
             if (!expression) {
-               return message.channel.send({
+               return interaction.channel.send({
                   embeds: [
                      await client.util.embed({
                         desc: ERROR.NO_ARGS,
@@ -36,7 +36,7 @@ export default class Calc extends Command {
                   const taken = `\`\`\`ts\n${
                      (stop[0] * 1e9 + stop[1]) / 1e6
                   }ms taken!\`\`\``;
-                  message.channel.send({
+                  interaction.channel.send({
                      embeds: [
                         await client.util.embed({
                            timestamp: true,
@@ -45,16 +45,16 @@ export default class Calc extends Command {
                               iconURL:
                                  client.user.displayAvatarURL()
                            },
-                           authorName: message.author.tag,
+                           authorName: interaction.user.tag,
                            authorIcon:
-                              message.author.displayAvatarURL(),
+                              interaction.user.displayAvatarURL(),
                            desc: `	**Result:**\n${result}\n**Time Taken:**\n${taken}`,
                            color: 'NAVY'
                         })
                      ]
                   });
                } catch (e) {
-                  message.channel.send({
+                  interaction.channel.send({
                      embeds: [
                         await client.util.embed({
                            desc: `❌ Invalid use of command. Check out the link [here](https://mathjs.org/) to see how the library works.`,

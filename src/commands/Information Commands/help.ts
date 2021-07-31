@@ -15,7 +15,7 @@ export default class Help extends Command {
          cooldown: 0,
          category: 'information',
          usage: '<prefix>help <command name>',
-         run: async (client, message, args) => {
+         run: async (client, interaction, args) => {
             const filterCmds = client.commands.filter(
                (i) => i.category !== 'owner'
             );
@@ -32,7 +32,7 @@ export default class Help extends Command {
                   .join(', ');
             };
             if (!args || !searchFor) {
-               message.channel.send({
+               interaction.channel.send({
                   embeds: [
                      await client.util.embed({
                         fields: [
@@ -67,9 +67,9 @@ export default class Help extends Command {
                         ],
                         timestamp: true,
                         color: 'NAVY',
-                        authorName: message.author.tag,
+                        authorName: interaction.user.tag,
                         authorIcon:
-                           message.author.displayAvatarURL(),
+                           interaction.user.displayAvatarURL(),
                         footer: {
                            text: 'Winbi Bot • Created By PraveshK',
                            iconURL:
@@ -88,7 +88,7 @@ export default class Help extends Command {
                   filterCmds.get(searchFor) ||
                   filterAliases.get(searchFor);
                if (!cmd || typeof cmd === 'undefined') {
-                  return message.channel.send({
+                  return interaction.channel.send({
                      embeds: [
                         await client.util.embed({
                            desc: ERROR.COULD_NOT_FIND,
@@ -100,15 +100,15 @@ export default class Help extends Command {
                      ]
                   });
                } else {
-                  message.channel.send({
+                  interaction.channel.send({
                      embeds: [
                         await client.util.embed({
                            timestamp: true,
                            color: 'NAVY',
                            title: `Command Name: ${cmd.name.toLowerCase()}`,
-                           authorName: message.author.tag,
+                           authorName: interaction.user.tag,
                            authorIcon:
-                              message.author.displayAvatarURL(),
+                              interaction.user.displayAvatarURL(),
                            footer: {
                               text: 'Winbi Bot • Created By PraveshK',
                               iconURL:

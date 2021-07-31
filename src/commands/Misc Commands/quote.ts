@@ -13,12 +13,12 @@ export default class Quote extends Command {
          cooldown: 15,
          category: 'misc',
          usage: '<prefix>quote',
-         run: async (client, message) => {
+         run: async (client, interaction) => {
             const BASE = 'https://api.quotable.io/random';
             const res: AxiosResponse<QuoteResponse> =
                await axios.get(BASE);
             if (res.status === 404) {
-               return message.channel.send({
+               return interaction.channel.send({
                   embeds: [
                      await client.util.embed({
                         desc: `${ERROR.FAILED_REQUEST}`,
@@ -30,7 +30,7 @@ export default class Quote extends Command {
                   ]
                });
             } else {
-               message.channel.send({
+               interaction.channel.send({
                   embeds: [
                      await client.util.embed({
                         timestamp: true,
@@ -44,9 +44,9 @@ export default class Quote extends Command {
                               ? res.data.datedAdded
                               : 'None specified.'
                         }**`,
-                        authorName: message.author.tag,
+                        authorName: interaction.user.tag,
                         authorIcon:
-                           message.author.displayAvatarURL(),
+                           interaction.user.displayAvatarURL(),
                         footer: {
                            text: 'Winbi Bot • Created By PraveshK',
                            iconURL:

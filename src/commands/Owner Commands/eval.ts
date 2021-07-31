@@ -3,6 +3,7 @@ import { ERROR } from '../../typedefs/constants';
 import * as ts from 'typescript';
 import { Command } from '../../handlers/CmdEvtHandler';
 import { Winbi } from '../../client';
+import { GuildMember } from 'discord.js';
 
 export default class Eval extends Command {
    public constructor(client: Winbi) {
@@ -13,10 +14,10 @@ export default class Eval extends Command {
          perms: ['SEND_MESSAGES'],
          cooldown: 5,
          category: 'owner',
-         run: async (client, message, args) => {
+         run: async (client, interaction, args) => {
             const evaluation = args.join(' ');
             if (!evaluation)
-               return message.channel.send({
+               return interaction.channel.send({
                   embeds: [
                      await client.util.embed({
                         desc: ERROR.NO_ARGS,
@@ -34,7 +35,7 @@ export default class Eval extends Command {
             const prRegex = new RegExp(/process/gi);
             const tokenRegex = new RegExp(/token/gi);
             if (prRegex.test(evaluation) === true) {
-               return message.channel.send({
+               return interaction.channel.send({
                   embeds: [
                      await client.util.embed({
                         desc: ERROR.PROCESS,
@@ -47,7 +48,7 @@ export default class Eval extends Command {
                });
             }
             if (tokenRegex.test(evaluation) === true) {
-               return message.channel.send({
+               return interaction.channel.send({
                   embeds: [
                      await client.util.embed({
                         desc: ERROR.TOKEN,
@@ -61,7 +62,8 @@ export default class Eval extends Command {
             }
             if (
                evaluation &&
-               message.member?.id === '391364111331622912'
+               (interaction.member as GuildMember).id ===
+                  '391364111331622912'
             ) {
                try {
                   evaled = eval(ts.transpile(evaluation));
@@ -74,7 +76,7 @@ export default class Eval extends Command {
                   const taken = `\`\`\`ts\n${
                      (stop[0] * 1e9 + stop[1]) / 1e6
                   }ms taken!\`\`\``;
-                  message.channel.send({
+                  interaction.channel.send({
                      embeds: [
                         await client.util.embed({
                            timestamp: true,
@@ -83,9 +85,9 @@ export default class Eval extends Command {
                               iconURL:
                                  client.user.displayAvatarURL()
                            },
-                           authorName: message.author.tag,
+                           authorName: interaction.user.tag,
                            authorIcon:
-                              message.author.displayAvatarURL(),
+                              interaction.user.displayAvatarURL(),
                            desc: `	**Result:**\n${result}\n**Time Taken:**\n${taken}`,
                            color: 'NAVY'
                         })
@@ -93,7 +95,7 @@ export default class Eval extends Command {
                   });
                } catch (e) {
                   if (e) {
-                     message.channel.send({
+                     interaction.channel.send({
                         embeds: [
                            await client.util.embed({
                               desc: `❯ ${e}`,

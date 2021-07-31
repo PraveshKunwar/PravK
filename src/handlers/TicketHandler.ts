@@ -1,8 +1,8 @@
 import {
    ButtonInteraction,
    CategoryChannel,
+   CommandInteraction,
    GuildChannel,
-   Message,
    TextChannel
 } from 'discord.js';
 import { Winbi } from '../client';
@@ -13,50 +13,53 @@ export default class TicketHandler {
       this.client = client;
    }
    public async nameTicketSession(
-      message: Message
+      interaction: CommandInteraction
    ): Promise<string> {
       return `ticket-${
-         message.author.discriminator
+         interaction.user.discriminator
       }-${this.client.util.randomString(4)}`;
    }
    public async createTicketSession(
-      message: Message
+      interaction: CommandInteraction
    ): Promise<TextChannel> {
       const categoryChannel: CategoryChannel | undefined =
          (await this.client.util.getChannel(
-            message,
+            interaction,
             null,
-            'category',
+            'GUILD_CATEGORY',
             'tickets'
          )) as CategoryChannel | undefined;
       const categoryPosition = (
-         message.guild.channels.cache.first() as GuildChannel
+         interaction.guild.channels.cache.first() as GuildChannel
       ).position;
       if (
          !categoryChannel ||
          categoryChannel === undefined
       ) {
          const newCategoryChannel =
-            await message.guild.channels.create('tickets', {
-               type: 'category',
-               position:
-                  categoryPosition !== undefined
-                     ? categoryPosition + 1
-                     : 1
-            });
+            await interaction.guild.channels.create(
+               'tickets',
+               {
+                  type: 'GUILD_CATEGORY',
+                  position:
+                     categoryPosition !== undefined
+                        ? categoryPosition + 1
+                        : 1
+               }
+            );
          if (newCategoryChannel) {
             const createNewTicket =
-               await message.guild.channels.create(
-                  await this.nameTicketSession(message),
+               await interaction.guild.channels.create(
+                  await this.nameTicketSession(interaction),
                   {
-                     type: 'text',
+                     type: 'GUILD_TEXT',
                      permissionOverwrites: [
                         {
-                           id: message.guild.id,
+                           id: interaction.guild.id,
                            deny: ['VIEW_CHANNEL']
                         },
                         {
-                           id: message.member.user.id,
+                           id: interaction.member.user.id,
                            allow: ['VIEW_CHANNEL', 'SPEAK']
                         }
                      ],
@@ -65,23 +68,23 @@ export default class TicketHandler {
                );
             this.client.emit(
                'ticketCreate',
-               message,
+               interaction,
                createNewTicket
             );
          }
       } else if (categoryChannel) {
          const createNewTicket =
-            await message.guild.channels.create(
-               await this.nameTicketSession(message),
+            await interaction.guild.channels.create(
+               await this.nameTicketSession(interaction),
                {
-                  type: 'text',
+                  type: 'GUILD_TEXT',
                   permissionOverwrites: [
                      {
-                        id: message.guild.id,
+                        id: interaction.guild.id,
                         deny: ['VIEW_CHANNEL']
                      },
                      {
-                        id: message.member.user.id,
+                        id: interaction.member.user.id,
                         allow: ['VIEW_CHANNEL', 'SPEAK']
                      }
                   ],
@@ -90,7 +93,7 @@ export default class TicketHandler {
             );
          this.client.emit(
             'ticketCreate',
-            message,
+            interaction,
             createNewTicket
          );
          return createNewTicket;

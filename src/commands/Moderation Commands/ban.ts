@@ -1,6 +1,6 @@
 import { Command } from '../../handlers/CmdEvtHandler';
 import { Winbi } from '../../client';
-import { Snowflake } from 'discord.js';
+import { GuildMember, Snowflake } from 'discord.js';
 import { ERROR } from '../../typedefs/constants';
 
 export default class Ban extends Command {
@@ -12,9 +12,9 @@ export default class Ban extends Command {
          cooldown: 10,
          category: 'moderation',
          usage: '<prefix>ban <member> <optional reason>',
-         run: async (client, message, args) => {
+         run: async (client, interaction, args) => {
             if (!args[0]) {
-               return message.channel.send({
+               return interaction.channel.send({
                   embeds: [
                      await client.util.embed({
                         desc: ERROR.MENTION_USER,
@@ -28,15 +28,18 @@ export default class Ban extends Command {
             }
             const memberToBan =
                (await client.util.getMember(
-                  message,
-                  client.util.parseMentions(args[0])
+                  interaction,
+                  client.util.parseMentions(
+                     interaction.options.get('user')
+                        .value as string
+                  )
                )) ||
                (await client.util.getMember(
-                  message,
+                  interaction,
                   args[0] as Snowflake
                ));
             if (!memberToBan || memberToBan === undefined) {
-               return message.channel.send({
+               return interaction.channel.send({
                   embeds: [
                      await client.util.embed({
                         desc: ERROR.USER_NO_EXIST,
@@ -50,10 +53,12 @@ export default class Ban extends Command {
             }
             const reason = args.slice(1).join(' ');
             if (
-               client.util.parseMentions(args[0]) ===
-               client.user.id
+               client.util.parseMentions(
+                  interaction.options.get('user')
+                     .value as string
+               ) === client.user.id
             ) {
-               return message.channel.send({
+               return interaction.channel.send({
                   embeds: [
                      await client.util.embed({
                         desc: `❌ Cannot ban myself.`,
@@ -65,10 +70,12 @@ export default class Ban extends Command {
                   ]
                });
             } else if (
-               client.util.parseMentions(args[0]) ===
-               message.member.id
+               client.util.parseMentions(
+                  interaction.options.get('user')
+                     .value as string
+               ) === (interaction.member as GuildMember).id
             ) {
-               return message.channel.send({
+               return interaction.channel.send({
                   embeds: [
                      await client.util.embed({
                         desc: `❌ Cannot ban yourself.`,
@@ -82,14 +89,14 @@ export default class Ban extends Command {
             }
             const checkRoles =
                await client.util.checkRolePosition(
-                  message.member,
+                  interaction.member as GuildMember,
                   memberToBan
                );
             if (
                checkRoles === false ||
                checkRoles === 'same'
             ) {
-               return message.channel.send({
+               return interaction.channel.send({
                   embeds: [
                      await client.util.embed({
                         desc: ERROR.HIGHER_SAME_ROLE,
@@ -102,7 +109,7 @@ export default class Ban extends Command {
                });
             }
             if (!memberToBan.bannable) {
-               return message.channel.send({
+               return interaction.channel.send({
                   embeds: [
                      await client.util.embed({
                         desc: `❌ Mentioned member was not bannable. Try again.`,
@@ -117,16 +124,16 @@ export default class Ban extends Command {
                memberToBan
                   .ban({ reason })
                   .then(async (member) => {
-                     return message.channel.send({
+                     return interaction.channel.send({
                         embeds: [
                            await client.util.embed({
                               timestamp: true,
                               color: 'NAVY',
 
                               authorName:
-                                 message.author.tag,
+                                 interaction.user.tag,
                               authorIcon:
-                                 message.author.displayAvatarURL(),
+                                 interaction.user.displayAvatarURL(),
                               footer: {
                                  text: 'Winbi Bot • Created By PraveshK',
                                  iconURL:
@@ -144,7 +151,7 @@ export default class Ban extends Command {
                      });
                   })
                   .catch(async () => {
-                     return message.channel.send({
+                     return interaction.channel.send({
                         embeds: [
                            await client.util.embed({
                               desc: ERROR.UNKNOWN,

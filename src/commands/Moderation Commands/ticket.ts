@@ -11,9 +11,9 @@ export default class Ticket extends Command {
          cooldown: 10,
          category: 'moderation',
          usage: '<prefix>ticket',
-         run: async (client, message) => {
+         run: async (client, interaction) => {
             await client.TicketHandler.createTicketSession(
-               message
+               interaction
             );
          }
       });

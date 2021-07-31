@@ -1,5 +1,5 @@
 import {
-   Message,
+   CommandInteraction,
    MessageActionRow,
    MessageButton,
    TextChannel
@@ -13,23 +13,23 @@ export default class TicketCreate extends Event {
          name: 'ticketCreate',
          run: async (
             client,
-            message: Message,
+            interaction: CommandInteraction,
             channel: TextChannel
          ) => {
             const ticketButtons =
                new MessageActionRow().addComponents(
                   new MessageButton()
-                     .setCustomID('ticket-close')
+                     .setCustomId('ticket-close')
                      .setLabel('Close ticket')
                      .setEmoji('❌')
                      .setStyle('DANGER'),
                   new MessageButton()
-                     .setCustomID('ticket-save')
+                     .setCustomId('ticket-save')
                      .setLabel('Save ticket transcript')
                      .setEmoji('✉')
                      .setStyle('PRIMARY'),
                   new MessageButton()
-                     .setCustomID('ticket-lock')
+                     .setCustomId('ticket-lock')
                      .setLabel('Lock ticket')
                      .setEmoji('🔒')
                      .setStyle('SECONDARY')
@@ -40,10 +40,10 @@ export default class TicketCreate extends Event {
                   await client.util.embed({
                      timestamp: true,
                      color: 'NAVY',
-                     desc: `Welcome to the ticket ${message.author.tag}. Click one of the buttons below any time. Enjoy!`,
-                     authorName: message.author.tag,
+                     desc: `Welcome to the ticket ${interaction.user.tag}. Click one of the buttons below any time. Enjoy!`,
+                     authorName: interaction.user.tag,
                      authorIcon:
-                        message.author.displayAvatarURL(),
+                        interaction.user.displayAvatarURL(),
                      footer: {
                         text: 'Winbi Bot • Created By PraveshK',
                         iconURL:

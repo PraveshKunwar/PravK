@@ -32,11 +32,11 @@ export default class CmdAnalzyer extends Command {
          perms: ['SEND_MESSAGES'],
          cooldown: 5,
          category: 'owner',
-         run: async (client, message, args) => {
+         run: async (client, interaction, args) => {
             try {
                const cmd = args.join(' ');
                if (!cmd) {
-                  message.channel.send(ERROR.NO_ARGS);
+                  interaction.channel.send(ERROR.NO_ARGS);
                } else if (cmd) {
                   const fileContent = await cmdAnalyzer({
                      path: cmd
@@ -68,12 +68,12 @@ export default class CmdAnalzyer extends Command {
                         `\`\`\`ts\n${fileContent}\`\`\``
                      );
                   }
-                  message.channel.send({
+                  interaction.channel.send({
                      embeds: [ContentEmbed]
                   });
                }
             } catch (e) {
-               message.channel.send(ERROR.UNKNOWN);
+               interaction.channel.send(ERROR.UNKNOWN);
             }
          }
       });

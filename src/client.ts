@@ -1,6 +1,7 @@
 import {
    ApplicationCommand,
    Client,
+   ClientEvents,
    Collection,
    Snowflake
 } from 'discord.js';
@@ -18,11 +19,12 @@ import Utility from './lib/util';
 import consola, { Consola } from 'consola';
 import ReminderSession from './helpers/Helper';
 import DisTube from 'distube';
+import { Command } from './handlers/CmdEvtHandler';
 
 dotenv.config();
 
 class Winbi extends Client {
-   public slashCommands: ApplicationCommand[];
+   public slashCommands!: Array<ApplicationCommand>;
    public util: Utility;
    public DisTube: DisTube;
    public DBHandler: DBHandler;
@@ -105,12 +107,12 @@ class Winbi extends Client {
                file.endsWith('.js') ||
                file.match(/.*\.js$/)
             ) {
-               const cmd: Required<
-                  Readonly<CommandStruct>
-               > = new (await import(file)).default(
-                  this
-               ) as Required<Readonly<CommandStruct>>;
+               const cmd: Required<Readonly<Command>> =
+                  new (await import(file)).default(
+                     this
+                  ) as Required<Readonly<Command>>;
                this.commands.set(cmd.name, cmd);
+               // eslint-disable-next-line @typescript-eslint/no-explicit-any
                this.slashCommands.push(
                   cmd.slashCommandOptions
                );
@@ -137,7 +139,10 @@ class Winbi extends Client {
                      this
                   ) as Required<Readonly<EventStruct>>;
                this.events.set(evt.name, evt);
-               this.on(evt.name, evt.run.bind(null, this));
+               this.on(
+                  evt.name as keyof ClientEvents,
+                  evt.run.bind(null, this)
+               );
             }
          });
       });

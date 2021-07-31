@@ -10,9 +10,9 @@ export default class Balance extends Command {
          cooldown: 10,
          category: 'currency',
          usage: '<prefix>play',
-         run: async (client, message, args) => {
+         run: async (client, interaction, args) => {
             await client.MusicHandler.play(
-               message,
+               interaction,
                args.join(' ')
             );
          }

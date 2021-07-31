@@ -1,7 +1,6 @@
 import {
    ApplicationCommand,
    ApplicationCommandData,
-   ApplicationCommandOption,
    ApplicationCommandOptionData,
    ClientEvents,
    CommandInteraction,
@@ -37,7 +36,7 @@ export interface CommandFunc {
    (
       client: Winbi,
       interaction: CommandInteraction,
-      args: CommandInteractionOption[]
+      args: (string | number | boolean)[]
    ): void | Promise<unknown> | Promise<void>;
 }
 
@@ -65,11 +64,18 @@ export interface CommandStruct {
    cooldown?: number;
    category?: categories;
    usage?: string | string[];
-   slashCommandOptions?: CommandInteractionOption;
+   slashCommandOptions?: ISlashCommand;
+}
+
+export interface ISlashCommand
+   extends ApplicationCommandData {
+   name: string;
+   description: string;
+   options?: ApplicationCommandOptionData[];
 }
 
 export interface EventStruct {
-   name?: keyof ClientEvents;
+   name?: keyof ClientEvents | string;
    run?: EventFunc;
 }
 

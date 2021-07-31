@@ -1,6 +1,5 @@
 import {
    Collection,
-   CommandInteractionOption,
    GuildMember,
    Interaction,
    Snowflake
@@ -34,9 +33,10 @@ export default class InteractionEvent extends Event {
                   client.aliases.get(
                      interaction.commandName
                   );
-               const args: CommandInteractionOption[] = [];
+               const args: (string | number | boolean)[] =
+                  [];
                interaction.options.data.map((option) => {
-                  args.push(option);
+                  args.push(option.value);
                });
                if (!cooldowns.has(command.name)) {
                   cooldowns.set(

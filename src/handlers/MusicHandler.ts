@@ -1,4 +1,4 @@
-import { Message } from 'discord.js';
+import { CommandInteraction, Message } from 'discord.js';
 import { Winbi } from '../client';
 import ytsr from 'ytsr';
 
@@ -46,7 +46,7 @@ export default class MusicHandler {
       }
    }
    public async play(
-      message: Message,
+      interaction: CommandInteraction,
       query: string
    ): Promise<void> {
       const result = await ytsr(query);
@@ -54,7 +54,6 @@ export default class MusicHandler {
       if (result.items[0].type === 'video') {
          res = result.items[0].url;
       }
-      this.client.DisTube.play(message, res);
    }
    public async stop(): Promise<void> {
       console.log(2);

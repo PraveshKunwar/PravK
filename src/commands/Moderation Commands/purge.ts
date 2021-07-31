@@ -14,14 +14,14 @@ export default class Purge extends Command {
          category: 'moderation',
          usage: '<prefix>purge <number less than 1000>',
 
-         run: async (client, message, args) => {
+         run: async (client, interaction, args) => {
             const toDeleteMsgs = Number(args[0]);
             if (
                !toDeleteMsgs ||
                isNaN(toDeleteMsgs) ||
                toDeleteMsgs > 100
             ) {
-               return message.channel.send({
+               return interaction.channel.send({
                   embeds: [
                      await client.util.embed({
                         desc: ERROR.NO_NUMS,
@@ -32,8 +32,8 @@ export default class Purge extends Command {
                      })
                   ]
                });
-            } else if (!message.channel.messages) {
-               return message.channel.send({
+            } else if (!interaction.channel.messages) {
+               return interaction.channel.send({
                   embeds: [
                      await client.util.embed({
                         desc: ERROR.NO_MSGS_TO_DEL,
@@ -45,10 +45,10 @@ export default class Purge extends Command {
                   ]
                });
             } else {
-               (message.channel as TextChannel)
+               (interaction.channel as TextChannel)
                   .bulkDelete(toDeleteMsgs, true)
                   .then(async () => {
-                     return message.channel.send({
+                     return interaction.channel.send({
                         embeds: [
                            await client.util.embed({
                               desc: `🗑 Deleted ${toDeleteMsgs} messages. `,
@@ -61,7 +61,7 @@ export default class Purge extends Command {
                      });
                   })
                   .catch(async (err: DiscordAPIError) => {
-                     return message.channel.send({
+                     return interaction.channel.send({
                         embeds: [
                            await client.util.embed({
                               desc: `${ERROR.UNKNOWN} \n\n Discord: ${err.message}`,

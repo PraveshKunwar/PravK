@@ -1,4 +1,7 @@
-import { PermissionString } from 'discord.js';
+import {
+   ApplicationCommand,
+   PermissionString
+} from 'discord.js';
 import { Winbi } from '../client';
 import {
    categories,
@@ -20,6 +23,9 @@ export class Command {
    public cooldown?: number;
    public category?: categories;
    public usage?: string | string[];
+   public slashCommandOptions:
+      | ApplicationCommand<Record<string, unknown>>
+      | undefined;
    public constructor(
       client: Winbi,
       options: CommandStruct
@@ -33,6 +39,17 @@ export class Command {
       this.cooldown = options.cooldown;
       this.category = options.category;
       this.usage = options.usage;
+      if (this.slashCommandOptions) {
+         this.slashCommandOptions = new ApplicationCommand<
+            Record<string, unknown>
+         >(this.client, {
+            ...options.slashCommandOptions,
+            name: this.name,
+            description: this.desc,
+            options:
+               options.slashCommandOptions.options || []
+         });
+      }
    }
 }
 
