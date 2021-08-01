@@ -24,7 +24,7 @@ import { Command } from './handlers/CmdEvtHandler';
 dotenv.config();
 
 class Winbi extends Client {
-   public slashCommands!: Array<ApplicationCommand>;
+   public slashCommands: Array<ApplicationCommand> = [];
    public util: Utility;
    public DisTube: DisTube;
    public DBHandler: DBHandler;
@@ -73,7 +73,6 @@ class Winbi extends Client {
          ],
          retryLimit: Number.POSITIVE_INFINITY
       });
-      this.slashCommands = [];
       this.util = new Utility(this);
       this.DisTube = new DisTube(this, {
          emitNewSongOnly: true,
@@ -112,10 +111,11 @@ class Winbi extends Client {
                      this
                   ) as Required<Readonly<Command>>;
                this.commands.set(cmd.name, cmd);
-               // eslint-disable-next-line @typescript-eslint/no-explicit-any
-               this.slashCommands.push(
-                  cmd.slashCommandOptions
-               );
+               if (cmd.slashCommandOptions) {
+                  this.slashCommands.push(
+                     cmd.slashCommandOptions
+                  );
+               }
                if (cmd.aliases) {
                   cmd.aliases.map((alias: string) => {
                      this.aliases.set(alias, cmd);

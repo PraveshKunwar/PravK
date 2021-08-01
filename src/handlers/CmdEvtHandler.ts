@@ -39,16 +39,13 @@ export class Command {
       this.cooldown = options.cooldown;
       this.category = options.category;
       this.usage = options.usage;
-      if (this.slashCommandOptions) {
-         this.slashCommandOptions = new ApplicationCommand<
-            Record<string, unknown>
-         >(this.client, {
-            ...options.slashCommandOptions,
-            name: this.name,
-            description: this.desc,
-            options:
-               options.slashCommandOptions.options || []
-         });
+      if (options.slashCommandOptions) {
+         this.slashCommandOptions = new ApplicationCommand(
+            this.client,
+            {
+               ...options.slashCommandOptions
+            }
+         );
       }
    }
 }

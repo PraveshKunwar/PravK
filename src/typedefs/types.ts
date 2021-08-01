@@ -1,10 +1,8 @@
 import {
-   ApplicationCommand,
    ApplicationCommandData,
-   ApplicationCommandOptionData,
+   ApplicationCommandOption,
    ClientEvents,
    CommandInteraction,
-   CommandInteractionOption,
    PermissionString,
    Snowflake
 } from 'discord.js';
@@ -71,7 +69,7 @@ export interface ISlashCommand
    extends ApplicationCommandData {
    name: string;
    description: string;
-   options?: ApplicationCommandOptionData[];
+   options?: ApplicationCommandOption[];
 }
 
 export interface EventStruct {

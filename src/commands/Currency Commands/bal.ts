@@ -14,9 +14,10 @@ export default class Balance extends Command {
          slashCommandOptions: {
             name: 'balance',
             description: 'Get your current balance.',
+            defaultPermission: true,
             options: [
                {
-                  name: 'bal-user',
+                  name: 'bal_user',
                   type: 'USER',
                   description:
                      'user who is going to be mentioned.'
@@ -24,11 +25,10 @@ export default class Balance extends Command {
             ]
          },
          run: async (client, interaction, args) => {
-            const t =
-               interaction.options.get("bal-user'").value;
+            const [bal_user] = args;
             await interaction.reply({
                ephemeral: true,
-               content: `hhihihhihi \n\nval: ${t}`
+               content: `hhihihhihi \n\n value: ${bal_user}`
             });
          }
       });

@@ -15,9 +15,6 @@ export default class InteractionEvent extends Event {
          name: 'interactionCreate',
          run: async (client, interaction: Interaction) => {
             if (interaction.isCommand()) {
-               await interaction.defer().catch((err) => {
-                  client.logger.error(new Error(err));
-               });
                if (
                   !interaction.inGuild() ||
                   !interaction.channel ||
@@ -38,6 +35,7 @@ export default class InteractionEvent extends Event {
                interaction.options.data.map((option) => {
                   args.push(option.value);
                });
+
                if (!cooldowns.has(command.name)) {
                   cooldowns.set(
                      command.name,
@@ -173,6 +171,18 @@ export default class InteractionEvent extends Event {
                      client.logger.error(
                         new Error(`Error: ${e}`)
                      );
+                     await interaction.reply({
+                        ephemeral: true,
+                        embeds: [
+                           await client.util.embed({
+                              desc: `${ERROR.UNKNOWN}`,
+                              color: 'RED',
+                              footer: {
+                                 text: '\u3000'.repeat(10)
+                              }
+                           })
+                        ]
+                     });
                   }
                }
             }

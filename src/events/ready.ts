@@ -6,12 +6,15 @@ export default class Ready extends Event {
       super(client, {
          name: 'ready',
          run: async (client) => {
-            client.guilds.cache.forEach(async (g) => {
-               await g.commands?.set(client.slashCommands);
-            });
+            if (client.slashCommands) {
+               client.guilds.cache.forEach((guild) => {
+                  guild.commands.set(client.slashCommands);
+               });
+            }
             client.logger.success(
                `${client.user.tag} is online!`
             );
+
             await client.Reminder.loadHelperSession();
             client.user.setPresence({
                activities: [

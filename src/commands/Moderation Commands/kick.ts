@@ -14,6 +14,8 @@ export default class Kick extends Command {
          category: 'moderation',
          usage: '<prefix>kick <member> <reason>',
          slashCommandOptions: {
+            name: 'kick',
+            description: 'Kick any user from the guild.',
             options: [
                {
                   name: 'user',
