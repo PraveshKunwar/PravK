@@ -32,14 +32,37 @@ export default class CmdAnalzyer extends Command {
          perms: ['SEND_MESSAGES'],
          cooldown: 5,
          category: 'owner',
+         slashCommandOptions: {
+            name: 'cmd-analyzer',
+            description: 'Analyze any command.',
+            options: [
+               {
+                  name: 'cmd',
+                  type: 'STRING',
+                  description: 'Command to analyze.',
+                  required: true
+               }
+            ]
+         },
          run: async (client, interaction, args) => {
             try {
-               const cmd = args.join(' ');
-               if (!cmd) {
-                  interaction.channel.send(ERROR.NO_ARGS);
-               } else if (cmd) {
+               const [cmd] = args;
+               if (!cmd)
+                  return interaction.reply({
+                     ephemeral: true,
+                     embeds: [
+                        await client.util.embed({
+                           desc: ERROR.NO_ARGS,
+                           color: 'RED',
+                           footer: {
+                              text: '\u3000'.repeat(10)
+                           }
+                        })
+                     ]
+                  });
+               else if (cmd) {
                   const fileContent = await cmdAnalyzer({
-                     path: cmd
+                     path: cmd as string
                   });
                   const ContentEmbed = new MessageEmbed()
                      .setColor('#333')
@@ -68,7 +91,7 @@ export default class CmdAnalzyer extends Command {
                         `\`\`\`ts\n${fileContent}\`\`\``
                      );
                   }
-                  interaction.channel.send({
+                  interaction.reply({
                      embeds: [ContentEmbed]
                   });
                }

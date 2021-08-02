@@ -14,13 +14,6 @@ export default class InteractionEvent extends Event {
       super(client, {
          name: 'interactionCreate',
          run: async (client, interaction: Interaction) => {
-            if (interaction.isButton()) {
-               if (interaction.id === 'ticket-close') {
-                  await this.client.TicketHandler.deleteTicketSession(
-                     interaction
-                  );
-               }
-            }
             if (interaction.isCommand()) {
                if (
                   !interaction.inGuild() ||
@@ -190,6 +183,11 @@ export default class InteractionEvent extends Event {
                            })
                         ]
                      });
+                  }
+               }
+               if (interaction.isButton()) {
+                  if (interaction.id === 'ticket-close') {
+                     interaction.channel.send('ZHIIHIHI');
                   }
                }
             }

@@ -14,10 +14,23 @@ export default class Eval extends Command {
          perms: ['SEND_MESSAGES'],
          cooldown: 5,
          category: 'owner',
+         slashCommandOptions: {
+            name: 'eval',
+            description: 'Evaluate anything.',
+            options: [
+               {
+                  name: 'evaluation',
+                  type: 'STRING',
+                  description: 'Thing to evaluate.',
+                  required: true
+               }
+            ]
+         },
          run: async (client, interaction, args) => {
-            const evaluation = args.join(' ');
+            const [evaluation] = args;
             if (!evaluation)
-               return interaction.channel.send({
+               return interaction.reply({
+                  ephemeral: true,
                   embeds: [
                      await client.util.embed({
                         desc: ERROR.NO_ARGS,
@@ -34,8 +47,11 @@ export default class Eval extends Command {
             const stop = process.hrtime(start);
             const prRegex = new RegExp(/process/gi);
             const tokenRegex = new RegExp(/token/gi);
-            if (prRegex.test(evaluation) === true) {
-               return interaction.channel.send({
+            if (
+               prRegex.test(evaluation as string) === true
+            ) {
+               return interaction.reply({
+                  ephemeral: true,
                   embeds: [
                      await client.util.embed({
                         desc: ERROR.PROCESS,
@@ -47,8 +63,12 @@ export default class Eval extends Command {
                   ]
                });
             }
-            if (tokenRegex.test(evaluation) === true) {
-               return interaction.channel.send({
+            if (
+               tokenRegex.test(evaluation as string) ===
+               true
+            ) {
+               return interaction.reply({
+                  ephemeral: true,
                   embeds: [
                      await client.util.embed({
                         desc: ERROR.TOKEN,
@@ -66,7 +86,9 @@ export default class Eval extends Command {
                   '391364111331622912'
             ) {
                try {
-                  evaled = eval(ts.transpile(evaluation));
+                  evaled = eval(
+                     ts.transpile(evaluation as string)
+                  );
                   const result = `\`\`\`ts\n${inspect(
                      evaled,
                      {
@@ -76,7 +98,7 @@ export default class Eval extends Command {
                   const taken = `\`\`\`ts\n${
                      (stop[0] * 1e9 + stop[1]) / 1e6
                   }ms taken!\`\`\``;
-                  interaction.channel.send({
+                  interaction.reply({
                      embeds: [
                         await client.util.embed({
                            timestamp: true,
@@ -95,7 +117,8 @@ export default class Eval extends Command {
                   });
                } catch (e) {
                   if (e) {
-                     interaction.channel.send({
+                     interaction.reply({
+                        ephemeral: true,
                         embeds: [
                            await client.util.embed({
                               desc: `❯ ${e}`,

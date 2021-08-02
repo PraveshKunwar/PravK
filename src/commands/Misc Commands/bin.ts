@@ -55,7 +55,7 @@ export default class Bin extends Command {
                      }
                   );
 
-                  interaction.channel.send({
+                  interaction.reply({
                      embeds: [
                         await client.util.embed({
                            timestamp: true,

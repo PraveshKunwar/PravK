@@ -52,7 +52,7 @@ export default class Calc extends Command {
                   const taken = `\`\`\`ts\n${
                      (stop[0] * 1e9 + stop[1]) / 1e6
                   }ms taken!\`\`\``;
-                  interaction.channel.send({
+                  interaction.reply({
                      embeds: [
                         await client.util.embed({
                            timestamp: true,
