@@ -11,10 +11,32 @@ export default class Ban extends Command {
          perms: ['SEND_MESSAGES', 'BAN_MEMBERS'],
          cooldown: 10,
          category: 'moderation',
-         usage: '<prefix>ban <member> <optional reason>',
+         usage: '/ban <member> <optional reason>',
+         slashCommandOptions: {
+            name: 'ban',
+            description: 'Ban any user from the guild.',
+            options: [
+               {
+                  name: 'user',
+                  type: 'USER',
+                  description:
+                     'The member that is going to be banned.',
+                  required: true
+               },
+               {
+                  name: 'reason',
+                  type: 'STRING',
+                  description:
+                     'The reason why this member is being banned.',
+                  required: false
+               }
+            ]
+         },
          run: async (client, interaction, args) => {
-            if (!args[0]) {
-               return interaction.channel.send({
+            const [user, reason] = args;
+            if (!user) {
+               return interaction.reply({
+                  ephemeral: true,
                   embeds: [
                      await client.util.embed({
                         desc: ERROR.MENTION_USER,
@@ -29,17 +51,15 @@ export default class Ban extends Command {
             const memberToBan =
                (await client.util.getMember(
                   interaction,
-                  client.util.parseMentions(
-                     interaction.options.get('user')
-                        .value as string
-                  )
+                  client.util.parseMentions(user as string)
                )) ||
                (await client.util.getMember(
                   interaction,
-                  args[0] as Snowflake
+                  user as Snowflake
                ));
             if (!memberToBan || memberToBan === undefined) {
-               return interaction.channel.send({
+               return interaction.reply({
+                  ephemeral: true,
                   embeds: [
                      await client.util.embed({
                         desc: ERROR.USER_NO_EXIST,
@@ -51,14 +71,12 @@ export default class Ban extends Command {
                   ]
                });
             }
-            const reason = args.slice(1).join(' ');
             if (
-               client.util.parseMentions(
-                  interaction.options.get('user')
-                     .value as string
-               ) === client.user.id
+               client.util.parseMentions(user as string) ===
+               client.user.id
             ) {
-               return interaction.channel.send({
+               return interaction.reply({
+                  ephemeral: true,
                   embeds: [
                      await client.util.embed({
                         desc: `❌ Cannot ban myself.`,
@@ -70,12 +88,11 @@ export default class Ban extends Command {
                   ]
                });
             } else if (
-               client.util.parseMentions(
-                  interaction.options.get('user')
-                     .value as string
-               ) === (interaction.member as GuildMember).id
+               client.util.parseMentions(user as string) ===
+               (interaction.member as GuildMember).id
             ) {
-               return interaction.channel.send({
+               return interaction.reply({
+                  ephemeral: true,
                   embeds: [
                      await client.util.embed({
                         desc: `❌ Cannot ban yourself.`,
@@ -96,7 +113,8 @@ export default class Ban extends Command {
                checkRoles === false ||
                checkRoles === 'same'
             ) {
-               return interaction.channel.send({
+               return interaction.reply({
+                  ephemeral: true,
                   embeds: [
                      await client.util.embed({
                         desc: ERROR.HIGHER_SAME_ROLE,
@@ -109,7 +127,8 @@ export default class Ban extends Command {
                });
             }
             if (!memberToBan.bannable) {
-               return interaction.channel.send({
+               return interaction.reply({
+                  ephemeral: true,
                   embeds: [
                      await client.util.embed({
                         desc: `❌ Mentioned member was not bannable. Try again.`,
@@ -122,9 +141,9 @@ export default class Ban extends Command {
                });
             } else {
                memberToBan
-                  .ban({ reason })
+                  .ban({ reason: reason as string })
                   .then(async (member) => {
-                     return interaction.channel.send({
+                     return interaction.reply({
                         embeds: [
                            await client.util.embed({
                               timestamp: true,
@@ -151,7 +170,8 @@ export default class Ban extends Command {
                      });
                   })
                   .catch(async () => {
-                     return interaction.channel.send({
+                     return interaction.reply({
+                        ephemeral: true,
                         embeds: [
                            await client.util.embed({
                               desc: ERROR.UNKNOWN,

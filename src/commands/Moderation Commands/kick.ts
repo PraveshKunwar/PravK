@@ -12,7 +12,7 @@ export default class Kick extends Command {
          perms: ['SEND_MESSAGES', 'KICK_MEMBERS'],
          cooldown: 10,
          category: 'moderation',
-         usage: '<prefix>kick <member> <reason>',
+         usage: '/kick <member> <reason>',
          slashCommandOptions: {
             name: 'kick',
             description: 'Kick any user from the guild.',
@@ -21,13 +21,23 @@ export default class Kick extends Command {
                   name: 'user',
                   type: 'USER',
                   description:
-                     'The member that is going to be kicked.'
+                     'The member that is going to be kicked.',
+                  required: true
+               },
+               {
+                  name: 'reason',
+                  type: 'STRING',
+                  description:
+                     'The reason why this member is being kicked.',
+                  required: false
                }
             ]
          },
          run: async (client, interaction, args) => {
-            if (!args[0]) {
-               return interaction.channel.send({
+            const [user, reason] = args;
+            if (!user) {
+               return interaction.reply({
+                  ephemeral: true,
                   embeds: [
                      await client.util.embed({
                         desc: ERROR.MENTION_USER,
@@ -56,7 +66,8 @@ export default class Kick extends Command {
                !memberToKick ||
                memberToKick === undefined
             ) {
-               return interaction.channel.send({
+               return interaction.reply({
+                  ephemeral: true,
                   embeds: [
                      await client.util.embed({
                         desc: ERROR.USER_NO_EXIST,
@@ -68,15 +79,12 @@ export default class Kick extends Command {
                   ]
                });
             }
-            const reason =
-               interaction.options.get('reason').value;
             if (
-               client.util.parseMentions(
-                  interaction.options.get('user')
-                     .value as string
-               ) === client.user.id
+               client.util.parseMentions(user as string) ===
+               client.user.id
             ) {
-               return interaction.channel.send({
+               return interaction.reply({
+                  ephemeral: true,
                   embeds: [
                      await client.util.embed({
                         desc: `❌ Cannot kick myself.`,
@@ -88,12 +96,11 @@ export default class Kick extends Command {
                   ]
                });
             } else if (
-               client.util.parseMentions(
-                  interaction.options.get('user')
-                     .value as string
-               ) === interaction.member.user.id
+               client.util.parseMentions(user as string) ===
+               interaction.member.user.id
             ) {
-               return interaction.channel.send({
+               return interaction.reply({
+                  ephemeral: true,
                   embeds: [
                      await client.util.embed({
                         desc: `❌ Cannot kick yourself.`,
@@ -114,7 +121,8 @@ export default class Kick extends Command {
                checkRoles === false ||
                checkRoles === 'same'
             ) {
-               return interaction.channel.send({
+               return interaction.reply({
+                  ephemeral: true,
                   embeds: [
                      await client.util.embed({
                         desc: ERROR.HIGHER_SAME_ROLE,
@@ -127,7 +135,7 @@ export default class Kick extends Command {
                });
             }
             if (!memberToKick.kickable) {
-               return interaction.channel.send({
+               return interaction.reply({
                   embeds: [
                      await client.util.embed({
                         desc: `❌ Mentioned member was not kickable. Try again.`,
@@ -140,9 +148,13 @@ export default class Kick extends Command {
                });
             } else {
                memberToKick
-                  .kick()
+                  .kick(
+                     reason
+                        ? (reason as string)
+                        : 'No reason'
+                  )
                   .then(async (member) => {
-                     return interaction.channel.send({
+                     return interaction.reply({
                         embeds: [
                            await client.util.embed({
                               timestamp: true,
@@ -173,7 +185,8 @@ export default class Kick extends Command {
                      });
                   })
                   .catch(async () => {
-                     return interaction.channel.send({
+                     return interaction.reply({
+                        ephemeral: true,
                         embeds: [
                            await client.util.embed({
                               desc: ERROR.UNKNOWN,

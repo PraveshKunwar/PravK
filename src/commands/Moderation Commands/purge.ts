@@ -12,16 +12,31 @@ export default class Purge extends Command {
          perms: ['SEND_MESSAGES', 'MANAGE_MESSAGES'],
          cooldown: 20,
          category: 'moderation',
-         usage: '<prefix>purge <number less than 1000>',
+         usage: '/purge <number less than 100>',
+         slashCommandOptions: {
+            name: 'purge',
+            description:
+               'Purge any amount of messages, up to 100.',
+            options: [
+               {
+                  name: 'amount',
+                  type: 'NUMBER',
+                  description:
+                     'Amount of messages to delete.',
+                  required: true
+               }
+            ]
+         },
 
          run: async (client, interaction, args) => {
-            const toDeleteMsgs = Number(args[0]);
+            const [toDeleteMsgs] = args;
             if (
                !toDeleteMsgs ||
-               isNaN(toDeleteMsgs) ||
+               isNaN(toDeleteMsgs as number) ||
                toDeleteMsgs > 100
             ) {
-               return interaction.channel.send({
+               return interaction.reply({
+                  ephemeral: true,
                   embeds: [
                      await client.util.embed({
                         desc: ERROR.NO_NUMS,
@@ -33,7 +48,8 @@ export default class Purge extends Command {
                   ]
                });
             } else if (!interaction.channel.messages) {
-               return interaction.channel.send({
+               return interaction.reply({
+                  ephemeral: true,
                   embeds: [
                      await client.util.embed({
                         desc: ERROR.NO_MSGS_TO_DEL,
@@ -46,9 +62,12 @@ export default class Purge extends Command {
                });
             } else {
                (interaction.channel as TextChannel)
-                  .bulkDelete(toDeleteMsgs, true)
+                  .bulkDelete(
+                     parseInt(toDeleteMsgs as string),
+                     true
+                  )
                   .then(async () => {
-                     return interaction.channel.send({
+                     return interaction.reply({
                         embeds: [
                            await client.util.embed({
                               desc: `🗑 Deleted ${toDeleteMsgs} messages. `,
@@ -61,7 +80,8 @@ export default class Purge extends Command {
                      });
                   })
                   .catch(async (err: DiscordAPIError) => {
-                     return interaction.channel.send({
+                     return interaction.reply({
+                        ephemeral: true,
                         embeds: [
                            await client.util.embed({
                               desc: `${ERROR.UNKNOWN} \n\n Discord: ${err.message}`,

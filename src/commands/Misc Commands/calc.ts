@@ -12,11 +12,25 @@ export default class Calc extends Command {
          perms: ['SEND_MESSAGES'],
          cooldown: 10,
          category: 'misc',
-         usage: '<prefix>calc <expression>',
+         usage: '/calc <expression>',
+         slashCommandOptions: {
+            name: 'calc',
+            description:
+               'Calculates mathematical expression.',
+            options: [
+               {
+                  name: 'expression',
+                  type: 'STRING',
+                  description: 'Expression to evaluate.',
+                  required: true
+               }
+            ]
+         },
          run: async (client, interaction, args) => {
-            const expression = args.join(' ');
+            const [expression] = args;
             if (!expression) {
-               return interaction.channel.send({
+               return interaction.reply({
+                  ephemeral: true,
                   embeds: [
                      await client.util.embed({
                         desc: ERROR.NO_ARGS,
@@ -29,7 +43,9 @@ export default class Calc extends Command {
                });
             } else {
                try {
-                  const evaluation = evaluate(expression);
+                  const evaluation = evaluate(
+                     expression as string
+                  );
                   const start = process.hrtime();
                   const stop = process.hrtime(start);
                   const result = `\`\`\`ts\n${evaluation}\`\`\``;
@@ -54,7 +70,8 @@ export default class Calc extends Command {
                      ]
                   });
                } catch (e) {
-                  interaction.channel.send({
+                  interaction.reply({
+                     ephemeral: true,
                      embeds: [
                         await client.util.embed({
                            desc: `❌ Invalid use of command. Check out the link [here](https://mathjs.org/) to see how the library works.`,

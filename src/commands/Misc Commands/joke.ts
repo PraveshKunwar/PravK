@@ -12,14 +12,19 @@ export default class Quote extends Command {
          perms: ['SEND_MESSAGES'],
          cooldown: 15,
          category: 'misc',
-         usage: '<prefix>joke',
+         usage: '/joke',
+         slashCommandOptions: {
+            name: 'joke',
+            description: 'Gets a joke.'
+         },
          run: async (client, interaction) => {
             const BASE =
                'https://official-joke-api.appspot.com/jokes/random';
             const res: AxiosResponse<JokeResponse> =
                await axios.get(BASE);
             if (res.status === 404) {
-               return interaction.channel.send({
+               return interaction.reply({
+                  ephemeral: true,
                   embeds: [
                      await client.util.embed({
                         desc: `${ERROR.FAILED_REQUEST}`,
@@ -31,7 +36,7 @@ export default class Quote extends Command {
                   ]
                });
             } else {
-               interaction.channel.send({
+               interaction.reply({
                   embeds: [
                      await client.util.embed({
                         timestamp: true,

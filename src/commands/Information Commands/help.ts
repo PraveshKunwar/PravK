@@ -14,7 +14,19 @@ export default class Help extends Command {
          perms: ['SEND_MESSAGES'],
          cooldown: 0,
          category: 'information',
-         usage: '<prefix>help <command name>',
+         usage: '/help <command name>',
+         slashCommandOptions: {
+            name: 'help',
+            description: 'Help on all my commands.',
+            options: [
+               {
+                  name: 'command',
+                  type: 'STRING',
+                  description: 'Command to get info on.',
+                  required: false
+               }
+            ]
+         },
          run: async (client, interaction, args) => {
             const filterCmds = client.commands.filter(
                (i) => i.category !== 'owner'
@@ -22,7 +34,7 @@ export default class Help extends Command {
             const filterAliases = client.aliases.filter(
                (i) => i.category !== 'owner'
             );
-            const searchFor = args.join(' ');
+            const [command] = args;
             const categoryCmds = (
                category: categories
             ): string => {
@@ -31,8 +43,8 @@ export default class Help extends Command {
                   .map((cmd) => cmd.name)
                   .join(', ');
             };
-            if (!args || !searchFor) {
-               interaction.channel.send({
+            if (!args || !command) {
+               interaction.reply({
                   embeds: [
                      await client.util.embed({
                         fields: [
@@ -85,10 +97,11 @@ export default class Help extends Command {
                });
             } else {
                const cmd: CommandStruct =
-                  filterCmds.get(searchFor) ||
-                  filterAliases.get(searchFor);
+                  filterCmds.get(command as string) ||
+                  filterAliases.get(command as string);
                if (!cmd || typeof cmd === 'undefined') {
-                  return interaction.channel.send({
+                  return interaction.reply({
+                     ephemeral: true,
                      embeds: [
                         await client.util.embed({
                            desc: ERROR.COULD_NOT_FIND,
@@ -100,7 +113,7 @@ export default class Help extends Command {
                      ]
                   });
                } else {
-                  interaction.channel.send({
+                  interaction.reply({
                      embeds: [
                         await client.util.embed({
                            timestamp: true,

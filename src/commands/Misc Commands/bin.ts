@@ -12,11 +12,24 @@ export default class Bin extends Command {
          perms: ['SEND_MESSAGES'],
          cooldown: 10,
          category: 'misc',
-         usage: '<prefix>bin <source code>',
+         usage: '/bin <source code>',
+         slashCommandOptions: {
+            name: 'bin',
+            description: 'Create a new bin.',
+            options: [
+               {
+                  name: 'code',
+                  type: 'STRING',
+                  description: 'Code to upload to the bin.',
+                  required: true
+               }
+            ]
+         },
          run: async (client, interaction, args) => {
-            const code = args.join(' ');
+            const [code] = args;
             if (!code) {
-               return interaction.channel.send({
+               return interaction.reply({
+                  ephemeral: true,
                   embeds: [
                      await client.util.embed({
                         desc: ERROR.NO_ARGS,
@@ -32,7 +45,7 @@ export default class Bin extends Command {
                   const bin = await sourcebin.create(
                      [
                         {
-                           content: code,
+                           content: code as string,
                            language: 'text'
                         }
                      ],
@@ -61,9 +74,18 @@ export default class Bin extends Command {
                   });
                } catch (e) {
                   if (e) {
-                     interaction.channel.send(
-                        ERROR.UNKNOWN
-                     );
+                     interaction.reply({
+                        ephemeral: true,
+                        embeds: [
+                           await client.util.embed({
+                              desc: ERROR.UNKNOWN,
+                              color: 'RED',
+                              footer: {
+                                 text: '\u3000'.repeat(10)
+                              }
+                           })
+                        ]
+                     });
                   }
                }
             }

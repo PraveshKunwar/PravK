@@ -10,11 +10,28 @@ export default class Ticket extends Command {
          perms: ['SEND_MESSAGES', 'MANAGE_CHANNELS'],
          cooldown: 10,
          category: 'moderation',
-         usage: '<prefix>ticket',
+         usage: '/ticket',
+         slashCommandOptions: {
+            name: 'ticket',
+            description: 'Create a new ticket.'
+         },
          run: async (client, interaction) => {
             await client.TicketHandler.createTicketSession(
                interaction
-            );
+            ).then(async (channel) => {
+               return interaction.reply({
+                  ephemeral: true,
+                  embeds: [
+                     await client.util.embed({
+                        desc: `Created a new ticket: ${channel.name}`,
+                        color: 'NAVY',
+                        footer: {
+                           text: '\u3000'.repeat(10)
+                        }
+                     })
+                  ]
+               });
+            });
          }
       });
    }

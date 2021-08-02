@@ -10,7 +10,7 @@ export default class Balance extends Command {
          perms: ['SEND_MESSAGES'],
          cooldown: 10,
          category: 'currency',
-         usage: '<prefix>balance',
+         usage: '/balance',
          slashCommandOptions: {
             name: 'balance',
             description: 'Get your current balance.',
