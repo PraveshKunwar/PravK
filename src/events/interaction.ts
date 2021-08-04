@@ -46,27 +46,10 @@ export default class InteractionEvent extends Event {
                if (
                   !interaction.inGuild() ||
                   !interaction.channel ||
-                  interaction.member.user.bot ||
-                  interaction.channel.type === 'DM'
+                  interaction.member.user.bot
                )
                   return;
-               if (
-                  client.validate.isAlphanumeric(
-                     interaction.commandName
-                  ) === false
-               ) {
-                  return interaction.channel.send({
-                     embeds: [
-                        await client.util.embed({
-                           desc: ERROR.COULDNT_FIND_COMMAND,
-                           color: 'RED',
-                           footer: {
-                              text: '\u3000'.repeat(10)
-                           }
-                        })
-                     ]
-                  });
-               }
+
                const cooldowns = client.cooldowns;
                const command: CommandStruct =
                   client.commands.get(
@@ -77,9 +60,17 @@ export default class InteractionEvent extends Event {
                   );
                const args: (string | number | boolean)[] =
                   [];
-               interaction.options.data.map((option) => {
-                  args.push(option.value);
-               });
+
+               for (const opt of interaction.options.data) {
+                  if (opt.type === 'SUB_COMMAND') {
+                     if (opt.name) args.push(opt.name);
+                     opt.options?.forEach((option) => {
+                        if (option.value)
+                           args.push(option.value);
+                     });
+                  } else if (opt.value)
+                     args.push(opt.value);
+               }
 
                if (!cooldowns.has(command.name)) {
                   cooldowns.set(

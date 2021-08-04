@@ -1,5 +1,5 @@
 import {
-   ApplicationCommand,
+   ApplicationCommandData,
    Client,
    ClientEvents,
    Collection,
@@ -18,17 +18,16 @@ import {
 import Utility from './lib/util';
 import consola, { Consola } from 'consola';
 import ReminderSession from './helpers/Helper';
-import DisTube from 'distube';
 import { Command } from './handlers/CmdEvtHandler';
 import validator from 'validator';
 
 dotenv.config();
 
-class Winbi extends Client {
-   public slashCommands: Array<ApplicationCommand> = [];
+class Winbi extends Client<true> {
+   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   public slashCommands: ApplicationCommandData[] = [];
    public validate: typeof validator;
    public util: Utility;
-   public DisTube: DisTube;
    public DBHandler: DBHandler;
    public MusicHandler: MusicHandler;
    public TicketHandler: TicketHandler;
@@ -76,12 +75,12 @@ class Winbi extends Client {
          retryLimit: Number.POSITIVE_INFINITY
       });
       this.util = new Utility(this);
-      this.DisTube = new DisTube(this, {
+      /**  this.DisTube = new DisTube(this, {
          emitNewSongOnly: true,
          leaveOnEmpty: true,
          leaveOnFinish: true,
          leaveOnStop: true
-      });
+      });*/
       this.DBHandler = new DBHandler(this);
       this.MusicHandler = new MusicHandler(this);
       this.TicketHandler = new TicketHandler(this);

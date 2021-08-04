@@ -11,10 +11,7 @@ export default class Balance extends Command {
          category: 'currency',
          usage: '<prefix>play',
          run: async (client, interaction, args) => {
-            await client.MusicHandler.play(
-               interaction,
-               args.join(' ')
-            );
+            console.log(2);
          }
       });
    }

@@ -1,6 +1,5 @@
 import { CommandInteraction, Message } from 'discord.js';
 import { Winbi } from '../client';
-import ytsr from 'ytsr';
 
 export default class MusicHandler {
    private client: Winbi;
@@ -45,16 +44,7 @@ export default class MusicHandler {
          });
       }
    }
-   public async play(
-      interaction: CommandInteraction,
-      query: string
-   ): Promise<void> {
-      const result = await ytsr(query);
-      let res: string;
-      if (result.items[0].type === 'video') {
-         res = result.items[0].url;
-      }
-   }
+
    public async stop(): Promise<void> {
       console.log(2);
    }
