@@ -20,11 +20,13 @@ import consola, { Consola } from 'consola';
 import ReminderSession from './helpers/Helper';
 import DisTube from 'distube';
 import { Command } from './handlers/CmdEvtHandler';
+import validator from 'validator';
 
 dotenv.config();
 
 class Winbi extends Client {
    public slashCommands: Array<ApplicationCommand> = [];
+   public validate: typeof validator;
    public util: Utility;
    public DisTube: DisTube;
    public DBHandler: DBHandler;

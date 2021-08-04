@@ -14,6 +14,34 @@ export default class InteractionEvent extends Event {
       super(client, {
          name: 'interactionCreate',
          run: async (client, interaction: Interaction) => {
+            if (interaction.isButton()) {
+               switch (interaction.customId) {
+                  case 'ticket-close':
+                     await this.client.TicketHandler.deleteTicketSession(
+                        interaction
+                     );
+                     break;
+                  case 'ticket-open':
+                     await this.client.TicketHandler.createTicketSession(
+                        interaction
+                     ).then(async (channel) => {
+                        return interaction.reply({
+                           ephemeral: true,
+                           embeds: [
+                              await client.util.embed({
+                                 desc: `Created a new ticket: ${channel.name}`,
+                                 color: 'NAVY',
+                                 footer: {
+                                    text: '\u3000'.repeat(
+                                       10
+                                    )
+                                 }
+                              })
+                           ]
+                        });
+                     });
+               }
+            }
             if (interaction.isCommand()) {
                if (
                   !interaction.inGuild() ||
@@ -22,6 +50,23 @@ export default class InteractionEvent extends Event {
                   interaction.channel.type === 'DM'
                )
                   return;
+               if (
+                  client.validate.isAlphanumeric(
+                     interaction.commandName
+                  ) === false
+               ) {
+                  return interaction.channel.send({
+                     embeds: [
+                        await client.util.embed({
+                           desc: ERROR.COULDNT_FIND_COMMAND,
+                           color: 'RED',
+                           footer: {
+                              text: '\u3000'.repeat(10)
+                           }
+                        })
+                     ]
+                  });
+               }
                const cooldowns = client.cooldowns;
                const command: CommandStruct =
                   client.commands.get(
@@ -183,11 +228,6 @@ export default class InteractionEvent extends Event {
                            })
                         ]
                      });
-                  }
-               }
-               if (interaction.isButton()) {
-                  if (interaction.id === 'ticket-close') {
-                     interaction.channel.send('ZHIIHIHI');
                   }
                }
             }

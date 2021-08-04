@@ -1,3 +1,7 @@
+import {
+   MessageActionRow,
+   MessageButton
+} from 'discord.js';
 import { Winbi } from '../../client';
 import { Command } from '../../handlers/CmdEvtHandler';
 
@@ -16,21 +20,31 @@ export default class Ticket extends Command {
             description: 'Create a new ticket.'
          },
          run: async (client, interaction) => {
-            await client.TicketHandler.createTicketSession(
-               interaction
-            ).then(async (channel) => {
-               return interaction.reply({
-                  ephemeral: true,
-                  embeds: [
-                     await client.util.embed({
-                        desc: `Created a new ticket: ${channel.name}`,
-                        color: 'NAVY',
-                        footer: {
-                           text: '\u3000'.repeat(10)
-                        }
-                     })
-                  ]
-               });
+            const chooseButtons =
+               new MessageActionRow().addComponents(
+                  new MessageButton()
+                     .setCustomId('ticket-open')
+                     .setLabel('Open ticket')
+                     .setEmoji('✅')
+                     .setStyle('SUCCESS')
+               );
+            await interaction.reply({
+               components: [chooseButtons],
+               embeds: [
+                  await client.util.embed({
+                     timestamp: true,
+                     color: 'NAVY',
+                     desc: `To open a ticket, click the button down below.`,
+                     authorName: interaction.user.tag,
+                     authorIcon:
+                        interaction.user.displayAvatarURL(),
+                     footer: {
+                        text: 'Winbi Bot • Created By PraveshK',
+                        iconURL:
+                           client.user.displayAvatarURL()
+                     }
+                  })
+               ]
             });
          }
       });

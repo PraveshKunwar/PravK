@@ -1,7 +1,6 @@
 import {
    GuildChannel,
    GuildMember,
-   Message,
    Snowflake,
    User,
    EmbedFieldData,
@@ -10,7 +9,8 @@ import {
    MessageEmbed,
    ThreadChannel,
    Guild,
-   CommandInteraction
+   CommandInteraction,
+   ButtonInteraction
 } from 'discord.js';
 import { ChannelTypes } from 'discord.js/typings/enums';
 import { Winbi } from '../client';
@@ -89,7 +89,7 @@ export default class Utility {
       return guild;
    }
    public async getChannel(
-      interaction: CommandInteraction,
+      interaction: CommandInteraction | ButtonInteraction,
       id?: Snowflake,
       type?: Exclude<
          keyof typeof ChannelTypes,

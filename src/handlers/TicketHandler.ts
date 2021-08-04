@@ -13,14 +13,14 @@ export default class TicketHandler {
       this.client = client;
    }
    public async nameTicketSession(
-      interaction: CommandInteraction
+      interaction: CommandInteraction | ButtonInteraction
    ): Promise<string> {
       return `ticket-${
          interaction.user.discriminator
       }-${this.client.util.randomString(4)}`;
    }
    public async createTicketSession(
-      interaction: CommandInteraction
+      interaction: ButtonInteraction
    ): Promise<TextChannel> {
       const categoryChannel: CategoryChannel | undefined =
          (await this.client.util.getChannel(
