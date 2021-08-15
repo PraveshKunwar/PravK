@@ -2,7 +2,8 @@ import {
    Collection,
    GuildMember,
    Interaction,
-   Snowflake
+   Snowflake,
+   TextChannel
 } from 'discord.js';
 import { Winbi } from '../client';
 import { Event } from '../handlers/CmdEvtHandler';
@@ -29,7 +30,7 @@ export default class InteractionEvent extends Event {
                            ephemeral: true,
                            embeds: [
                               await client.util.embed({
-                                 desc: `Created a new ticket: ${channel.name}`,
+                                 desc: `✅ Created a new ticket: ${channel.name}`,
                                  color: 'NAVY',
                                  footer: {
                                     text: '\u3000'.repeat(
@@ -40,6 +41,48 @@ export default class InteractionEvent extends Event {
                            ]
                         });
                      });
+                     break;
+                  case 'ticket-save':
+                     await this.client.TicketHandler.saveTicketLogs().then(
+                        async () => {
+                           await interaction.reply({
+                              embeds: [
+                                 await client.util.embed({
+                                    desc: `Saving ticket logs for: ${
+                                       (
+                                          interaction.channel as TextChannel
+                                       ).name
+                                    }`,
+                                    color: 'NAVY',
+                                    footer: {
+                                       text: '\u3000'.repeat(
+                                          10
+                                       )
+                                    }
+                                 })
+                              ]
+                           });
+                           setTimeout(async () => {
+                              await interaction.channel.send(
+                                 {
+                                    embeds: [
+                                       await client.util.embed(
+                                          {
+                                             desc: `✅ Saved ticket logs.`,
+                                             color: 'NAVY',
+                                             footer: {
+                                                text: '\u3000'.repeat(
+                                                   10
+                                                )
+                                             }
+                                          }
+                                       )
+                                    ]
+                                 }
+                              );
+                           }, 5000);
+                        }
+                     );
                }
             }
             if (interaction.isCommand()) {

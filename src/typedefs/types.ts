@@ -1,6 +1,5 @@
 import {
    ApplicationCommandData,
-   ApplicationCommandOption,
    ClientEvents,
    CommandInteraction,
    PermissionString,
@@ -62,14 +61,7 @@ export interface CommandStruct {
    cooldown?: number;
    category?: categories;
    usage?: string | string[];
-   slashCommandOptions?: ISlashCommand;
-}
-
-export interface ISlashCommand
-   extends ApplicationCommandData {
-   name: string;
-   description: string;
-   options?: ApplicationCommandOption[];
+   slashCommandOptions?: ApplicationCommandData;
 }
 
 export interface EventStruct {

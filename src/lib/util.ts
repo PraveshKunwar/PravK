@@ -70,7 +70,7 @@ export interface EmbedData {
 }
 
 export default class Utility {
-   public client: Winbi;
+   client: Winbi;
    public constructor(client: Winbi) {
       this.client = client;
    }

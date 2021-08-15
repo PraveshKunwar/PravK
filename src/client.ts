@@ -20,12 +20,13 @@ import consola, { Consola } from 'consola';
 import ReminderSession from './helpers/Helper';
 import { Command } from './handlers/CmdEvtHandler';
 import validator from 'validator';
+import { REST } from '@discordjs/rest';
 
 dotenv.config();
 
 class Winbi extends Client<true> {
-   // eslint-disable-next-line @typescript-eslint/no-explicit-any
    public slashCommands: ApplicationCommandData[] = [];
+   public rest_v9: REST;
    public validate: typeof validator;
    public util: Utility;
    public DBHandler: DBHandler;
@@ -40,7 +41,7 @@ class Winbi extends Client<true> {
       string,
       Collection<Snowflake, number>
    >;
-   public constructor() {
+   public constructor(token?: string) {
       super({
          allowedMentions: {
             users: [
@@ -50,20 +51,12 @@ class Winbi extends Client<true> {
          },
          intents: [
             'DIRECT_MESSAGES',
-            'DIRECT_MESSAGE_REACTIONS',
-            'DIRECT_MESSAGE_TYPING',
             'GUILDS',
             'GUILD_BANS',
-            'GUILD_EMOJIS_AND_STICKERS',
-            'GUILD_INTEGRATIONS',
-            'GUILD_INVITES',
             'GUILD_MEMBERS',
             'GUILD_MESSAGES',
             'GUILD_MESSAGE_REACTIONS',
-            'GUILD_MESSAGE_TYPING',
-            'GUILD_PRESENCES',
-            'GUILD_VOICE_STATES',
-            'GUILD_WEBHOOKS'
+            'GUILD_PRESENCES'
          ],
          partials: [
             'MESSAGE',
@@ -75,12 +68,6 @@ class Winbi extends Client<true> {
          retryLimit: Number.POSITIVE_INFINITY
       });
       this.util = new Utility(this);
-      /**  this.DisTube = new DisTube(this, {
-         emitNewSongOnly: true,
-         leaveOnEmpty: true,
-         leaveOnFinish: true,
-         leaveOnStop: true
-      });*/
       this.DBHandler = new DBHandler(this);
       this.MusicHandler = new MusicHandler(this);
       this.TicketHandler = new TicketHandler(this);
@@ -90,6 +77,17 @@ class Winbi extends Client<true> {
       this.aliases = new Collection();
       this.cooldowns = new Collection();
       this.logger = consola;
+      this.rest_v9 = new REST({ version: '9' }).setToken(
+         token
+      );
+      process.on('uncaughtException', (err) => {
+         this.logger.error(new Error(err.message));
+      });
+      process.on('exit', (exit) => {
+         this.logger.error(
+            new Error(`Exited with code: ${exit}`)
+         );
+      });
    }
    public async cmdEvtHandler({
       CmdPattern,

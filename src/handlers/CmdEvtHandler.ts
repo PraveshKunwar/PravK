@@ -1,4 +1,7 @@
-import { PermissionString } from 'discord.js';
+import {
+   ApplicationCommandData,
+   PermissionString
+} from 'discord.js';
 import { Winbi } from '../client';
 import {
    categories,
@@ -6,7 +9,6 @@ import {
    CommandStruct,
    EventFunc,
    EventStruct,
-   ISlashCommand,
    sealClass
 } from '../typedefs/types';
 
@@ -21,7 +23,7 @@ export class Command {
    public cooldown?: number;
    public category?: categories;
    public usage?: string | string[];
-   public slashCommandOptions: ISlashCommand;
+   public slashCommandOptions: ApplicationCommandData;
    public constructor(
       client: Winbi,
       options: CommandStruct
