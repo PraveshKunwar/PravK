@@ -5,13 +5,13 @@ import {
    Snowflake,
    TextChannel
 } from 'discord.js';
-import { Winbi } from '../client';
+import { PravK } from '../client';
 import { Event } from '../handlers/CmdEvtHandler';
 import { ERROR } from '../typedefs/constants';
 import { CommandStruct } from '../typedefs/types';
 
 export default class InteractionEvent extends Event {
-   public constructor(client: Winbi) {
+   public constructor(client: PravK) {
       super(client, {
          name: 'interactionCreate',
          run: async (client, interaction: Interaction) => {

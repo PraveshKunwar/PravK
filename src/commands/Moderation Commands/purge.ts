@@ -1,10 +1,10 @@
 import { DiscordAPIError, TextChannel } from 'discord.js';
 import { ERROR } from '../../typedefs/constants';
 import { Command } from '../../handlers/CmdEvtHandler';
-import { Winbi } from '../../client';
+import { PravK } from '../../client';
 
 export default class Purge extends Command {
-   public constructor(client: Winbi) {
+   public constructor(client: PravK) {
       super(client, {
          name: 'purge',
          aliases: ['clear'],

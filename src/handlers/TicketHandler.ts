@@ -5,11 +5,11 @@ import {
    GuildChannel,
    TextChannel
 } from 'discord.js';
-import { Winbi } from '../client';
+import { PravK } from '../client';
 
 export default class TicketHandler {
-   private client: Winbi;
-   public constructor(client: Winbi) {
+   private client: PravK;
+   public constructor(client: PravK) {
       this.client = client;
    }
    public async nameTicketSession(
@@ -112,7 +112,7 @@ export default class TicketHandler {
                authorIcon:
                   interaction.user.displayAvatarURL(),
                footer: {
-                  text: 'Winbi Bot • Created By PraveshK',
+                  text: 'PravK Bot • Created By PraveshK',
                   iconURL:
                      this.client.user.displayAvatarURL()
                }

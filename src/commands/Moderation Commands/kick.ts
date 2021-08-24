@@ -1,10 +1,10 @@
 import { Command } from '../../handlers/CmdEvtHandler';
-import { Winbi } from '../../client';
+import { PravK } from '../../client';
 import { GuildMember, Snowflake, User } from 'discord.js';
 import { ERROR } from '../../typedefs/constants';
 
 export default class Kick extends Command {
-   public constructor(client: Winbi) {
+   public constructor(client: PravK) {
       super(client, {
          name: 'kick',
          aliases: ['boot'],
@@ -169,7 +169,7 @@ export default class Kick extends Command {
                                     .user as User
                               ).displayAvatarURL(),
                               footer: {
-                                 text: 'Winbi Bot • Created By PraveshK',
+                                 text: 'PravK Bot • Created By PraveshK',
                                  iconURL:
                                     client.user.displayAvatarURL()
                               },

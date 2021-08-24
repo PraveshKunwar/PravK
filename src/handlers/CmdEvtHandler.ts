@@ -2,7 +2,7 @@ import {
    ApplicationCommandData,
    PermissionString
 } from 'discord.js';
-import { Winbi } from '../client';
+import { PravK } from '../client';
 import {
    categories,
    CommandFunc,
@@ -14,7 +14,7 @@ import {
 
 @sealClass
 export class Command {
-   public client: Winbi;
+   public client: PravK;
    public name?: string;
    public run?: CommandFunc;
    public aliases?: string[];
@@ -25,7 +25,7 @@ export class Command {
    public usage?: string | string[];
    public slashCommandOptions: ApplicationCommandData;
    public constructor(
-      client: Winbi,
+      client: PravK,
       options: CommandStruct
    ) {
       this.client = client;
@@ -44,10 +44,10 @@ export class Command {
 
 @sealClass
 export class Event {
-   public client: Winbi;
+   public client: PravK;
    public name: string;
    public run: EventFunc;
-   public constructor(client: Winbi, options: EventStruct) {
+   public constructor(client: PravK, options: EventStruct) {
       this.client = client;
       this.name = options.name;
       this.run = options.run;

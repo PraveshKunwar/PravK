@@ -1,10 +1,10 @@
 import { ERROR } from '../../typedefs/constants';
 import { evaluate } from 'mathjs';
 import { Command } from '../../handlers/CmdEvtHandler';
-import { Winbi } from '../../client';
+import { PravK } from '../../client';
 
 export default class Calc extends Command {
-   public constructor(client: Winbi) {
+   public constructor(client: PravK) {
       super(client, {
          name: 'calc',
          desc: 'Calculates any mathematical expression.',
@@ -57,7 +57,7 @@ export default class Calc extends Command {
                         await client.util.embed({
                            timestamp: true,
                            footer: {
-                              text: `Winbi Bot • Created By PraveshK`,
+                              text: `PravK Bot • Created By PraveshK`,
                               iconURL:
                                  client.user.displayAvatarURL()
                            },

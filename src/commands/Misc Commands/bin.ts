@@ -1,10 +1,10 @@
 import sourcebin from 'sourcebin';
 import { ERROR } from '../../typedefs/constants';
-import { Winbi } from '../../client';
+import { PravK } from '../../client';
 import { Command } from '../../handlers/CmdEvtHandler';
 
 export default class Bin extends Command {
-   public constructor(client: Winbi) {
+   public constructor(client: PravK) {
       super(client, {
          name: 'bin',
          aliases: ['sourcebin', 'code'],
@@ -65,7 +65,7 @@ export default class Bin extends Command {
                            authorIcon:
                               interaction.user.displayAvatarURL(),
                            footer: {
-                              text: 'Winbi Bot • Created By PraveshK',
+                              text: 'PravK Bot • Created By PraveshK',
                               iconURL:
                                  client.user.displayAvatarURL()
                            }

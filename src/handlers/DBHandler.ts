@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
-import { Winbi } from '../client';
+import { PravK } from '../client';
 
 export default class DBHandler {
-   private client: Winbi;
-   public constructor(client: Winbi) {
+   private client: PravK;
+   public constructor(client: PravK) {
       this.client = client;
    }
    public options = {

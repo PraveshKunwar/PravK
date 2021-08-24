@@ -1,9 +1,9 @@
 {
-   "name": "winbi",
+   "name": "PravK",
    "version": "1.0.0",
-   "description": " Winbi - A multipurpose Discord Bot, dashboard included.",
+   "description": " PravK - A multipurpose Discord Bot, dashboard included.",
    "main": "index.js",
-   "repository": "https://github.com/PraveshKunwar/Winbi",
+   "repository": "https://github.com/PraveshKunwar/PravK",
    "author": "Pravesh Kunwar <praveshk04@outlook.com>",
    "license": "MIT",
    "dependencies": {

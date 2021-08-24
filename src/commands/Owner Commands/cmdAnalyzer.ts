@@ -3,7 +3,7 @@ import { MessageEmbed, Util } from 'discord.js';
 import { readFile } from 'fs/promises';
 import { Stats, statSync } from 'fs';
 import { Command } from '../../handlers/CmdEvtHandler';
-import { Winbi } from '../../client';
+import { PravK } from '../../client';
 
 interface Analyzer {
    path: string;
@@ -24,7 +24,7 @@ const cmdAnalyzer = async ({
 };
 
 export default class CmdAnalzyer extends Command {
-   public constructor(client: Winbi) {
+   public constructor(client: PravK) {
       super(client, {
          name: 'cmd',
          aliases: ['cmdyzer', 'cmd-analyzer'],

@@ -1,10 +1,10 @@
 import { Command } from '../../handlers/CmdEvtHandler';
-import { Winbi } from '../../client';
+import { PravK } from '../../client';
 import { GuildMember, Snowflake } from 'discord.js';
 import { ERROR } from '../../typedefs/constants';
 
 export default class Ban extends Command {
-   public constructor(client: Winbi) {
+   public constructor(client: PravK) {
       super(client, {
          name: 'ban',
          desc: 'Ban any member from the server.',
@@ -154,7 +154,7 @@ export default class Ban extends Command {
                               authorIcon:
                                  interaction.user.displayAvatarURL(),
                               footer: {
-                                 text: 'Winbi Bot • Created By PraveshK',
+                                 text: 'PravK Bot • Created By PraveshK',
                                  iconURL:
                                     client.user.displayAvatarURL()
                               },

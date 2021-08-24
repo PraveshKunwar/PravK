@@ -13,7 +13,7 @@ import {
    ButtonInteraction
 } from 'discord.js';
 import { ChannelTypes } from 'discord.js/typings/enums';
-import { Winbi } from '../client';
+import { PravK } from '../client';
 
 type ColorResolvable =
    | 'DEFAULT'
@@ -70,8 +70,8 @@ export interface EmbedData {
 }
 
 export default class Utility {
-   client: Winbi;
-   public constructor(client: Winbi) {
+   client: PravK;
+   public constructor(client: PravK) {
       this.client = client;
    }
    public async getGuild(

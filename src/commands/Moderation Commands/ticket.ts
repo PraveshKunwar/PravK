@@ -2,11 +2,11 @@ import {
    MessageActionRow,
    MessageButton
 } from 'discord.js';
-import { Winbi } from '../../client';
+import { PravK } from '../../client';
 import { Command } from '../../handlers/CmdEvtHandler';
 
 export default class Ticket extends Command {
-   public constructor(client: Winbi) {
+   public constructor(client: PravK) {
       super(client, {
          name: 'ticket',
          aliases: ['create-ticket'],
@@ -39,7 +39,7 @@ export default class Ticket extends Command {
                      authorIcon:
                         interaction.user.displayAvatarURL(),
                      footer: {
-                        text: 'Winbi Bot • Created By PraveshK',
+                        text: 'PravK Bot • Created By PraveshK',
                         iconURL:
                            client.user.displayAvatarURL()
                      }

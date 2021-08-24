@@ -1,9 +1,9 @@
 import { CommandInteraction, Message } from 'discord.js';
-import { Winbi } from '../client';
+import { PravK } from '../client';
 
 export default class MusicHandler {
-   private client: Winbi;
-   public constructor(client: Winbi) {
+   private client: PravK;
+   public constructor(client: PravK) {
       this.client = client;
    }
    public async checkPerms(msg: Message): Promise<Message> {

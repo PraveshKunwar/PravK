@@ -3,11 +3,11 @@ import {
    CommandStruct
 } from '../../typedefs/types';
 import { ERROR } from '../../typedefs/constants';
-import { Winbi } from '../../client';
+import { PravK } from '../../client';
 import { Command } from '../../handlers/CmdEvtHandler';
 
 export default class Help extends Command {
-   public constructor(client: Winbi) {
+   public constructor(client: PravK) {
       super(client, {
          name: 'help',
          desc: 'Help command to get info on commands or specific command.',
@@ -83,14 +83,14 @@ export default class Help extends Command {
                         authorIcon:
                            interaction.user.displayAvatarURL(),
                         footer: {
-                           text: 'Winbi Bot • Created By PraveshK',
+                           text: 'PravK Bot • Created By PraveshK',
                            iconURL:
                               client.user.displayAvatarURL()
                         },
                         title: 'Help Dashboard',
                         desc: `Welcome to the help section. Type ${client.util.codeblock(
                            '<prefix>help <command name>'
-                        )} to quickly get help on a command. \n\n Here are a list of all the commands down below: \n\nIf you need more help: [Github](https://github.com/PraveshKunwar/Winbi) • Discord: **PraveshK#4056**
+                        )} to quickly get help on a command. \n\n Here are a list of all the commands down below: \n\nIf you need more help: [Github](https://github.com/PraveshKunwar/PravK) • Discord: **PraveshK#4056**
              `
                      })
                   ]
@@ -123,7 +123,7 @@ export default class Help extends Command {
                            authorIcon:
                               interaction.user.displayAvatarURL(),
                            footer: {
-                              text: 'Winbi Bot • Created By PraveshK',
+                              text: 'PravK Bot • Created By PraveshK',
                               iconURL:
                                  client.user.displayAvatarURL()
                            },

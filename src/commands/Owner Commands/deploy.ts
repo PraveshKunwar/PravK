@@ -1,11 +1,11 @@
 import { Routes } from 'discord-api-types/v9';
 import { Command } from '../../handlers/CmdEvtHandler';
-import { Winbi } from '../../client';
+import { PravK } from '../../client';
 import { Message } from 'discord.js';
 import { ERROR } from '../../typedefs/constants';
 
 export default class Eval extends Command {
-   public constructor(client: Winbi) {
+   public constructor(client: PravK) {
       super(client, {
          name: 'deploy',
          desc: 'Deploy commands',
@@ -24,7 +24,7 @@ export default class Eval extends Command {
                         await client.util.embed({
                            timestamp: true,
                            footer: {
-                              text: `Winbi Bot • Created By PraveshK`,
+                              text: `PravK Bot • Created By PraveshK`,
                               iconURL:
                                  client.user.displayAvatarURL()
                            },
@@ -51,7 +51,7 @@ export default class Eval extends Command {
                         await client.util.embed({
                            timestamp: true,
                            footer: {
-                              text: `Winbi Bot • Created By PraveshK`,
+                              text: `PravK Bot • Created By PraveshK`,
                               iconURL:
                                  client.user.displayAvatarURL()
                            },

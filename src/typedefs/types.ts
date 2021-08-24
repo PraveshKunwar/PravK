@@ -64,8 +64,10 @@ export interface CommandStruct {
    slashCommandOptions?: ApplicationCommandData;
 }
 
+export type Events = keyof ClientEvents;
+
 export interface EventStruct {
-   name?: keyof ClientEvents | string;
+   name?: Events | string;
    run?: EventFunc;
 }
 

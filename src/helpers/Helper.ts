@@ -1,13 +1,13 @@
 import { Message, Snowflake } from 'discord.js';
-import { Winbi } from '../client';
+import { PravK } from '../client';
 import { ReminderOptions } from '../typedefs/types';
 
 export default class ReminderSession {
-   public readonly client: Winbi;
+   public readonly client: PravK;
    public time: string | number | Date;
    public id: Snowflake;
    public constructor(
-      client: Winbi,
+      client: PravK,
       options?: ReminderOptions
    ) {
       this.client = client;

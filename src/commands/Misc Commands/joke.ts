@@ -2,10 +2,10 @@ import { ERROR } from '../../typedefs/constants';
 import axios, { AxiosResponse } from 'axios';
 import { JokeResponse } from '../../typedefs/types';
 import { Command } from '../../handlers/CmdEvtHandler';
-import { Winbi } from '../../client';
+import { PravK } from '../../client';
 
 export default class Quote extends Command {
-   public constructor(client: Winbi) {
+   public constructor(client: PravK) {
       super(client, {
          name: 'joke',
          desc: 'Gets a random joke.',
@@ -46,7 +46,7 @@ export default class Quote extends Command {
                         authorIcon:
                            interaction.user.displayAvatarURL(),
                         footer: {
-                           text: 'Winbi Bot • Created By PraveshK',
+                           text: 'PravK Bot • Created By PraveshK',
                            iconURL:
                               client.user.displayAvatarURL()
                         }

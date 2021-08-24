@@ -24,7 +24,7 @@ import { REST } from '@discordjs/rest';
 
 dotenv.config();
 
-class Winbi extends Client<true> {
+class PravK extends Client<true> {
    public slashCommands: ApplicationCommandData[] = [];
    public rest_v9: REST;
    public validate: typeof validator;
@@ -148,7 +148,7 @@ class Winbi extends Client<true> {
    }
 
    public async start(token: string): Promise<void> {
-      if (this instanceof Client && token) {
+      if (token) {
          this.login(token);
          this.DBHandler.connect(process.env.MONGO_URI);
          this.cmdEvtHandler({
@@ -163,4 +163,4 @@ class Winbi extends Client<true> {
    }
 }
 
-export { Winbi };
+export { PravK };

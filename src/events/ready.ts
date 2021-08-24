@@ -1,8 +1,8 @@
-import { Winbi } from '../client';
+import { PravK } from '../client';
 import { Event } from '../handlers/CmdEvtHandler';
 
 export default class Ready extends Event {
-   public constructor(client: Winbi) {
+   public constructor(client: PravK) {
       super(client, {
          name: 'ready',
          run: async (client) => {
@@ -18,7 +18,7 @@ export default class Ready extends Event {
             client.user.setPresence({
                activities: [
                   {
-                     name: 'Type @Winbi !!',
+                     name: 'Type @PravK !!',
                      type: 'PLAYING'
                   }
                ],

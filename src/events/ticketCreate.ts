@@ -4,11 +4,11 @@ import {
    MessageButton,
    TextChannel
 } from 'discord.js';
-import { Winbi } from '../client';
+import { PravK } from '../client';
 import { Event } from '../handlers/CmdEvtHandler';
 
 export default class TicketCreate extends Event {
-   public constructor(client: Winbi) {
+   public constructor(client: PravK) {
       super(client, {
          name: 'ticketCreate',
          run: async (
@@ -45,7 +45,7 @@ export default class TicketCreate extends Event {
                      authorIcon:
                         interaction.user.displayAvatarURL(),
                      footer: {
-                        text: 'Winbi Bot • Created By PraveshK',
+                        text: 'PravK Bot • Created By PraveshK',
                         iconURL:
                            client.user.displayAvatarURL()
                      }
